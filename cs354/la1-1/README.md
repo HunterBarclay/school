@@ -22,3 +22,9 @@ $ guile test.scm
 $ ./test.scm
 ```
 
+In `test.scm`, all examples in the assignment instructions are tested and confirmed. In addition, I added another, larger test.
+
+## General Usage
+
+You can load the `super-duper.scm` script and use the function yourself, just as is done in `test.scm`.
+

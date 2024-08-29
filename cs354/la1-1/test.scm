@@ -12,13 +12,22 @@
 ;; if the particular test passes.
 ;;
 
+;; Loads `super-duper` script.
 (load "super-duper.scm")
 
+;; Executes `super-duper` with the provided inputs source and count, then
+;; checks the output against expected, printing the results of the test
+;; to the console accordingly.
+;;
+;; Parameters:
+;;     source   - Source to test.
+;;     count    - Number of duplication in the test.
+;;     expected - Exepcted output of `super-duper`.
 (define (test source count expected)
     (define (display-test actual)
         (format
             #t
-            "┬─ Test -> (super-duper ~a ~a)\n├─ Output -> ~a\n├─ Expected -> ~a\n│\n"
+            "┬─ Test ->\t(super-duper ~a ~a)\n├─ Output ->\t~a\n├─ Expected ->\t~a\n│\n"
             source
             count
             actual
@@ -33,8 +42,51 @@
     (display-test (super-duper source count))    
 )
 
-(test '() 1 '())
-(test 'x 1 'x)
-(test '(1) 2 '(1 1))
-(test '(1) 3 '(1 1))
+(display "Examples from assignment instructions\n")
+(test
+    123 1
+    123
+)
+(test
+    123 2
+    123
+)
+(test
+    '() 1
+    '()
+)
+(test
+    '() 2
+    '()
+)
+(test
+    '(x) 1
+    '(x)
+)
+(test
+    '(x) 2
+    '(x x)
+)
+(test
+    '(x y) 1
+    '(x y)
+)
+(test
+    '(x y) 2
+    '(x x y y)
+)
+(test
+    '((a b) y) 3
+    '((a a a b b b) (a a a b b b) (a a a b b b) y y y)
+)
+
+(display "Additional Test(s)\n")
+(test
+    '((a b) ((x) y z)) 3
+    '((a a a b b b) (a a a b b b) (a a a b b b) ((x x x) (x x x) (x x x) y y y z z z) ((x x x) (x x x) (x x x) y y y z z z) ((x x x) (x x x) (x x x) y y y z z z))
+)
+(test
+    '(a) 13
+    '(a a a a a a a a a a a a a)
+)
 
