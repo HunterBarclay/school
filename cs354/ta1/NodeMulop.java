@@ -15,6 +15,6 @@ public class NodeMulop extends Node {
 		throw new EvalException(pos,"bogus mulop: "+mulop);
 	}
 
-	public String code() { return mulop; }
+	public String code() { return String.format(" %s ", mulop); }
 
 }

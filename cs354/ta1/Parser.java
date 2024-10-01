@@ -55,6 +55,10 @@ public class Parser {
 			match("id");
 			return new NodeFactId(pos(), id.lex());
 		}
+		if (curr().equals(new Token("-"))) {
+			match("-");
+			return new NodeFactNeg(parseFact());
+		}
 		Token num = curr();
 		match("num");
 		return new NodeFactNum(num.lex());
