@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ $1 == "clean" ]; then
+    rm gen
+    rm *.class
+    rm test/test-*/gccerrs
+    rm test/test-*/gen*
+    rm test/test-*/inp
+    rm test/test-*/out*
+elif [ $1 == "compile" ]; then
+    javac *.java
+fi
