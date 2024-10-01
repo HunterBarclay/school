@@ -120,7 +120,7 @@ public class Scanner {
 			pos++;
 			many(digits);
 			if (pos - old < 2) {
-				System.err.println("illegal number at position " + old);
+				Logger.error("illegal number at position %d", old);
 				return false;
 			}
 		}
@@ -188,28 +188,35 @@ public class Scanner {
 		// Check for End of File
 		if (done()) {
 			token = new Token("EOF");
+			Logger.debug("eof reached");
 			return false;
 		}
 
 		// Check for comment
 		if (matchComment()) {
+			Logger.debug("skipping comment");
 			return next();
 		}
 
 		String c = program.charAt(pos) + "";
 		if (digits.contains(c) || c.equals(".")) {
+			Logger.debug("scanning number");
 			if (!nextNumber()) {
+				Logger.error("failed to scan number, skipping...");
 				return next();
 			}
 		} else if (letters.contains(c)) {
+			Logger.debug("scanning identifier");
 			nextKwId();
 		} else if (operators.contains(c)) {
+			Logger.debug("scanning operator");
 			nextOp();
 		} else {
-			System.err.println("illegal character at position " + pos);
+			Logger.error("illegal character at position " + pos);
 			pos++;
 			return next();
 		}
+		Logger.debug("Token found: %s", token.toString());
 		return true;
 	}
 
@@ -246,14 +253,23 @@ public class Scanner {
 		return pos;
 	}
 
-	// for unit testing
+	/**
+	 * Main function serves as a unit testing entry point for the Scanner.
+	 * 
+	 * @param args Command-line args.
+	 */
 	public static void main(String[] args) {
+		Logger.debug("scanning '%s'", args[0]);
 		try {
+			int a = 0;
 			Scanner scanner = new Scanner(args[0]);
-			while (scanner.next())
+			while (scanner.next()) {
 				System.out.println(scanner.curr());
+				a++;
+			}
+			Logger.debug("%d tokens\n", a);
 		} catch (SyntaxException e) {
-			System.err.println(e);
+			Logger.error(e.toString());
 		}
 	}
 

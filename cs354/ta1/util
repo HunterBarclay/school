@@ -6,6 +6,20 @@ if [ $1 == "clean" ]; then
     rm test/test-*/gen*
     rm test/test-*/inp
     rm test/test-*/out*
+    rm test-scan/err-test-*
+    rm test-scan/out-test-*
 elif [ $1 == "build" ]; then
     javac *.java
+elif [ $1 == "test" ]; then
+    if [ $2 == "compiler" ]; then
+        [ -f Main.class ] || ./util build
+        cd test/
+        ./run
+        cd ..
+    elif [ $2 == "scanner" ]; then
+        [ -f Scanner.class ] || ./util build
+        cd test-scan/
+        ./run
+        cd ..
+    fi
 fi

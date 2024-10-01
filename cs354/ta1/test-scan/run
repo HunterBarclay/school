@@ -20,20 +20,11 @@ Prgs() {
 }
 
 Compare() {
-    case $2 in
-	i) trans="Interpreter:" ;;
-	c) trans="Compiler:   " ;;
-    esac
-    diff -q -w $1/exp $1/out.$2 2>/dev/null || echo "$trans ${1##*/} failed" >&2
+    diff -q -w exp-$1 out-$1 2>/dev/null || echo "Scanner ${1##*/} failed" >&2
 }
 
-for t in test-* ; do
-    echo ${t##*/}
-    [ -f $t/inp ] || > $t/inp
-    export Code=$t/gen
-    eval java -cp .. Main "$(Prgs $t/prg*)" < $t/inp > $t/out.i 2> $t/generrs
-    Compare $t i
-    clang-format -i $Code.c
-    gcc -Wall $Code.c -o $Code 2>$t/gccerrs && $Code < $t/inp > $t/out.c
-    Compare $t c
+for t in test-[A-Za-z]* ; do
+    echo ${t}
+    eval java -cp .. Scanner \"$(cat $t)\" > out-$t 2> err-$t
+    Compare $t
 done
