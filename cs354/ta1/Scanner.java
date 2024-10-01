@@ -75,24 +75,30 @@ public class Scanner {
 
 	// handy string-processing methods
 
+	/**
+	 * Determine if the scanner has reached the end of the program.
+	 * 
+	 * @return Has the end been reached.
+	 */
 	public boolean done() {
 		return pos >= program.length();
 	}
 
+	/**
+	 * Consume characters of the program that match a provided set.
+	 * 
+	 * @param s Set of characters to consume.
+	 */
 	private void many(Set<String> s) {
 		while (!done() && s.contains(program.charAt(pos) + ""))
 			pos++;
 	}
 
-	// This method advances the scanner,
-	// until the current input character
-	// is just after a sequence of one or more
-	// of a particular character.
-	// Arguments:
-	// c = the character to search for
-	// Members:
-	// program = the scanner's input
-	// pos = index of current input character
+	/**
+	 * Moves the scanner one character past the target character.
+	 * 
+	 * @param c Target character.
+	 */
 	private void past(char c) {
 		while (!done() && c != program.charAt(pos))
 			pos++;
@@ -102,6 +108,11 @@ public class Scanner {
 
 	// scan various kinds of lexeme
 
+	/**
+	 * Consume and tokenize next number in the program.
+	 * 
+	 * @return True if a number was tokenized successfully. Will always consume.
+	 */
 	private boolean nextNumber() {
 		int old = pos;
 		many(digits);
@@ -117,6 +128,9 @@ public class Scanner {
 		return true;
 	}
 
+	/**
+	 * Consume and tokenize an identifier or keyword.
+	 */
 	private void nextKwId() {
 		int old = pos;
 		many(letters);
@@ -125,6 +139,9 @@ public class Scanner {
 		token = new Token((keywords.contains(lexeme) ? lexeme : "id"), lexeme);
 	}
 
+	/**
+	 * Consume and tokenize an operator.
+	 */
 	private void nextOp() {
 		int old = pos;
 		pos = old + 2;
@@ -140,6 +157,11 @@ public class Scanner {
 		token = new Token(lexeme); // one-char operator
 	}
 
+	/**
+	 * Consume a comment
+	 * 
+	 * @return True if a comment was consumed.
+	 */
 	private boolean matchComment() {
 		if (pos + 2 < program.length() && program.substring(pos, pos + 2).equals("/*")) {
 			pos += 2;
@@ -153,8 +175,12 @@ public class Scanner {
 		return false;
 	}
 
-	// This method determines the kind of the next token (e.g., "id"),
-	// and calls a method to scan that token's lexeme (e.g., "foo").
+	/**
+	 * Consumes and tokenizes the program. This method will find the next token, provided
+	 * with the curr() method.
+	 * 
+	 * @return True if a token was found.
+	 */
 	public boolean next() {
 		// Skip the whitespace
 		many(whitespace);
@@ -187,20 +213,35 @@ public class Scanner {
 		return true;
 	}
 
-	// This method scans the next lexeme,
-	// if the current token is the expected token.
+	/**
+	 * Matches current token to a given token, advances tokenizer.
+	 * 
+	 * @param t Token to match to.
+	 * @throws SyntaxException If current token is not equal to given token.
+	 */
 	public void match(Token t) throws SyntaxException {
 		if (!t.equals(curr()))
 			throw new SyntaxException(pos, t, curr());
 		next();
 	}
 
+	/**
+	 * Gets current token.
+	 * 
+	 * @return Current token in the program.
+	 * @throws SyntaxException If current token is null.
+	 */
 	public Token curr() throws SyntaxException {
 		if (token == null)
 			throw new SyntaxException(pos, new Token("ANY"), new Token("EMPTY"));
 		return token;
 	}
 
+	/**
+	 * Current scanning location in the program.
+	 * 
+	 * @return Position of the scanner.
+	 */
 	public int pos() {
 		return pos;
 	}
