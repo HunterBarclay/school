@@ -8,6 +8,14 @@
 # After each execution, "out" is compared to "exp",
 # the expected output.
 
+let passed=0
+let skipped=0
+let failed=0
+
+PrgNum() {
+    echo $(echo $1 | sed -e 's/[^0-9]*\([0-9]\+\)*$/\1/')
+}
+
 Quote() {
     sed 's/"/\\\"/g'
 }
@@ -19,21 +27,58 @@ Prgs() {
     done
 }
 
+# Name for test: ${1##*/} or ${t##*/}
 Compare() {
     case $2 in
-	i) trans="Interpreter:" ;;
-	c) trans="Compiler:   " ;;
+	i) trans="Interpreter" && exp="exp" ;;
+	c) trans="Compiler" && exp="exp" ;;
+    s) trans="Scanner($3)" && exp="scan$3" ;;
     esac
-    diff -q -w $1/exp $1/out.$2 2>/dev/null || echo "$trans ${1##*/} failed" >&2
+    if eval diff -q -w $1/$exp $1/out$3.$2 2>/dev/null ; then
+        printf "%s:\t%s \033[92;1mpassed\033[0m\n" $trans
+        passed=$((passed+1))
+        return 1
+    else
+        printf "%s:\t%s \033[91;1mfailed\033[0m\n" $trans >&2
+        failed=$((failed+1))
+    fi
 }
 
 for t in test-* ; do
-    echo ${t##*/}
+    printf "\033[1m\t[ %s ]\033[0m\n" ${t##*/}
+
+    # Init input file if missing
     [ -f $t/inp ] || > $t/inp
+    
+    # Scanner Test
+    for p in $t/prg* ; do
+        prgnum=$(PrgNum $p)
+        # If scanner test doesn't exist for program, skip.
+        if [ -f $t/scan$prgnum ]; then
+            eval java -cp .. Scanner \""$(cat $p)"\" < $t/inp > $t/out$prgnum.s 2> $t/scanerrs
+            Compare $t s $prgnum
+        else
+            printf "Scanner(%s):\t\033[2;3mskipped\033[0m\n" $prgnum
+            skipped=$((skipped+1))
+        fi
+    done
+
+    # Interpreter Test
     export Code=$t/gen
     eval java -cp .. Main "$(Prgs $t/prg*)" < $t/inp > $t/out.i 2> $t/generrs
     Compare $t i
+
+    # Compiler Test
     clang-format -i $Code.c
     gcc -Wall $Code.c -o $Code 2>$t/gccerrs && $Code < $t/inp > $t/out.c
     Compare $t c
 done
+
+printf "\n"
+printf "\033[92;1mpassed\033[0m\t%d\n" $passed
+printf "\033[91;1mfailed\033[0m\t%d\n" $failed
+printf "\033[2;3mskipped\033[0m\t%d\n" $skipped
+
+printf "\n"
+printf "pass rate\t%3.2d%%\n" $((100 * passed / (passed + failed)))
+printf "pass rate\t%3.2d%%\n" $((100 * (passed + failed) / (passed + failed + skipped)))
