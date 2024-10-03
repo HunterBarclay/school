@@ -8,18 +8,26 @@
 # After each execution, "out" is compared to "exp",
 # the expected output.
 
+# ADDITIONS MADE BY HUNTER BARCLAY:
+# - Made text look better.
+# - Included Scanner unit testing.
+# - Included broad results of all the unit tests.
+
 let passed=0
 let skipped=0
 let failed=0
 
+# Get the program number, given file path
 PrgNum() {
     echo $(echo $1 | sed -e 's/[^0-9]*\([0-9]\+\)*$/\1/')
 }
 
+# Quote test?
 Quote() {
     sed 's/"/\\\"/g'
 }
 
+# Get list of programs provided in test
 Prgs() {
     local p
     for p ; do
@@ -44,6 +52,7 @@ Compare() {
     fi
 }
 
+# Iterate through each test directory
 for t in test-* ; do
     printf "\033[1m\t[ %s ]\033[0m\n" ${t##*/}
 
@@ -74,11 +83,13 @@ for t in test-* ; do
     Compare $t c
 done
 
+# Print overall results of the testing
 printf "\n"
-printf "\033[92;1mpassed\033[0m\t%d\n" $passed
-printf "\033[91;1mfailed\033[0m\t%d\n" $failed
-printf "\033[2;3mskipped\033[0m\t%d\n" $skipped
+printf "\t\033[92;1mpassed\033[0m\t%d\n" $passed
+printf "\t\033[91;1mfailed\033[0m\t%d\n" $failed
+printf "\t\033[2;3mskipped\033[0m\t%d\n" $skipped
 
 printf "\n"
-printf "pass rate\t%3.2d%%\n" $((100 * passed / (passed + failed)))
-printf "pass rate\t%3.2d%%\n" $((100 * (passed + failed) / (passed + failed + skipped)))
+printf "\t\033[1mpass-rate\t%3.2d%%\033[0m\n" $((100 * passed / (passed + failed)))
+printf "\n"
+
