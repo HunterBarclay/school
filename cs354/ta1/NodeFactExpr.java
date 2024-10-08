@@ -2,6 +2,9 @@ public class NodeFactExpr extends NodeFact {
 
 	private NodeExpr expr;
 
+	/**
+	 * @param expr Expression wrapped in parentheses.
+	 */
 	public NodeFactExpr(NodeExpr expr) {
 		this.expr=expr;
 	}

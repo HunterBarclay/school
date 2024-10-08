@@ -2,6 +2,9 @@ public class NodeFactNum extends NodeFact {
 
 	private String num;
 
+	/**
+	 * @param num Numeric constant.
+	 */
 	public NodeFactNum(String num) {
 		this.num=num;
 	}

@@ -1,7 +1,13 @@
+/**
+ * Used to print out evaluations of a node.
+ */
 public class NodeWr extends Node {
 
 	private NodeExpr expr;
 
+	/**
+	 * @param expr Expression to evaulate and print.
+	 */
 	public NodeWr(NodeExpr expr) {
 		this.expr=expr;
 	}

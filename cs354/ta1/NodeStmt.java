@@ -1,7 +1,16 @@
+/**
+ * <pre>
+ * Grammar:
+ * stmt: assn ';'
+ * </pre>
+ */
 public class NodeStmt extends Node {
 
 	private NodeAssn assn;
 
+	/**
+	 * @param assn Assignment.
+	 */
 	public NodeStmt(NodeAssn assn) {
 		this.assn=assn;
 	}

@@ -19,31 +19,63 @@ public class Scanner {
 
 	// initializers for previous sets
 
+	/**
+	 * Fill a set a range of characters.
+	 * 
+	 * @param s Set.
+	 * @param lo Lower bound character.
+	 * @param hi Upper bound character.
+	 */
 	private void fill(Set<String> s, char lo, char hi) {
 		for (char c = lo; c <= hi; c++)
 			s.add(c + "");
 	}
 
+	/**
+	 * Load set with whitespace characters.
+	 * 
+	 * @param s Target set.
+	 */
 	private void initWhitespace(Set<String> s) {
 		s.add(" ");
 		s.add("\n");
 		s.add("\t");
 	}
 
+	/**
+	 * Load set with digit characters.
+	 * 
+	 * @param s Target set.
+	 */
 	private void initDigits(Set<String> s) {
 		fill(s, '0', '9');
 	}
 
+	/**
+	 * Load set with alphabetic characters.
+	 * 
+	 * @param s Target set.
+	 */
 	private void initLetters(Set<String> s) {
 		fill(s, 'A', 'Z');
 		fill(s, 'a', 'z');
 	}
 
+	/**
+	 * Load set with alphanumeric characters.
+	 * 
+	 * @param s Target set.
+	 */
 	private void initLegits(Set<String> s) {
 		s.addAll(letters);
 		s.addAll(digits);
 	}
 
+	/**
+	 * Load set with operator characters.
+	 * 
+	 * @param s Target set.
+	 */
 	private void initOperators(Set<String> s) {
 		s.add("=");
 		s.add("+");
@@ -55,6 +87,11 @@ public class Scanner {
 		s.add(";");
 	}
 
+	/**
+	 * Load set with whitespace characters.
+	 * 
+	 * @param s Target set.
+	 */
 	private void initKeywords(Set<String> s) {
 	}
 
@@ -99,6 +136,7 @@ public class Scanner {
 	 * 
 	 * @param c Target character.
 	 */
+	@SuppressWarnings("unused")
 	private void past(char c) {
 		while (!done() && c != program.charAt(pos))
 			pos++;

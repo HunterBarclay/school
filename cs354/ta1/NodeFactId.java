@@ -2,6 +2,10 @@ public class NodeFactId extends NodeFact {
 
 	private String id;
 
+	/**
+	 * @param pos Position of the node.
+	 * @param id Identifier.
+	 */
 	public NodeFactId(int pos, String id) {
 		this.pos=pos;
 		this.id=id;

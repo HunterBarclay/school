@@ -1,15 +1,34 @@
+/**
+ * Expression node.
+ * 
+ * <pre>
+ * Grammar:
+ * expr: term addop expr
+ *     | term
+ * </pre>
+ */
 public class NodeExpr extends Node {
 
 	private NodeTerm term;
 	private NodeAddop addop;
 	private NodeExpr expr;
 
+	/**
+	 * @param term Left-hand operand.
+	 * @param addop Operation.
+	 * @param expr Right-hand operand.
+	 */
 	public NodeExpr(NodeTerm term, NodeAddop addop, NodeExpr expr) {
 		this.term=term;
 		this.addop=addop;
 		this.expr=expr;
 	}
 
+	/**
+	 * Appends expressions onto the right-hand side of this node.
+	 * 
+	 * @param expr Expression to append.
+	 */
 	public void append(NodeExpr expr) {
 		if (this.expr==null) {
 			this.addop=expr.addop;

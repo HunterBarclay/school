@@ -7,18 +7,40 @@ public class Parser {
 
 	private Scanner scanner;
 
+	/**
+	 * Match the next token to a provided simple token.
+	 * 
+	 * @param s Simple token (both token type and lexeme).
+	 * @throws SyntaxException If the next token doesn't match.
+	 */
 	private void match(String s) throws SyntaxException {
 		scanner.match(new Token(s));
 	}
 
+	/**
+	 * Get the last scanned token.
+	 * 
+	 * @return Last scanned token.
+	 * @throws SyntaxException If scanner doesn't have a token.
+	 */
 	private Token curr() throws SyntaxException {
 		return scanner.curr();
 	}
 
+	/**
+	 * Current scanner location in the program.
+	 * @return Program location.
+	 */
 	private int pos() {
 		return scanner.pos();
 	}
 
+	/**
+	 * Parses tokens into a multiplication operation node.
+	 * 
+	 * @return Multipliciation operation node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeMulop parseMulop() throws SyntaxException {
 		if (curr().equals(new Token("*"))) {
 			match("*");
@@ -31,6 +53,12 @@ public class Parser {
 		return null;
 	}
 
+	/**
+	 * Parses tokens into a addition operation node.
+	 * 
+	 * @return Addition operation node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeAddop parseAddop() throws SyntaxException {
 		if (curr().equals(new Token("+"))) {
 			match("+");
@@ -43,6 +71,12 @@ public class Parser {
 		return null;
 	}
 
+	/**
+	 * Parses tokens into a factor node.
+	 * 
+	 * @return Factor node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeFact parseFact() throws SyntaxException {
 		if (curr().equals(new Token("("))) {
 			match("(");
@@ -64,6 +98,12 @@ public class Parser {
 		return new NodeFactNum(num.lex());
 	}
 
+	/**
+	 * Parses tokens into a term node.
+	 * 
+	 * @return Term node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeTerm parseTerm() throws SyntaxException {
 		NodeFact fact = parseFact();
 		NodeMulop mulop = parseMulop();
@@ -74,6 +114,12 @@ public class Parser {
 		return term;
 	}
 
+	/**
+	 * Parses tokens into a expression node.
+	 * 
+	 * @return Expression node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeExpr parseExpr() throws SyntaxException {
 		NodeTerm term = parseTerm();
 		NodeAddop addop = parseAddop();
@@ -84,6 +130,12 @@ public class Parser {
 		return expr;
 	}
 
+	/**
+	 * Parses tokens into a assignment node.
+	 * 
+	 * @return Assignment node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeAssn parseAssn() throws SyntaxException {
 		Token id = curr();
 		match("id");
@@ -93,6 +145,12 @@ public class Parser {
 		return assn;
 	}
 
+	/**
+	 * Parses tokens into a statement node.
+	 * 
+	 * @return Statement node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	private NodeStmt parseStmt() throws SyntaxException {
 		NodeAssn assn = parseAssn();
 		match(";");
@@ -100,6 +158,12 @@ public class Parser {
 		return stmt;
 	}
 
+	/**
+	 * Parses a program into a root parse tree node.
+	 * 
+	 * @return Root parse tree node.
+	 * @throws SyntaxException If token doesn't match grammar.
+	 */
 	public Node parse(String program) throws SyntaxException {
 		scanner = new Scanner(program);
 		scanner.next();

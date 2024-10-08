@@ -2,6 +2,9 @@ public class NodeFactNeg extends NodeFact {
 
 	private NodeFact fact;
 
+	/**
+	 * @param fact Factor to negate.
+	 */
 	public NodeFactNeg(NodeFact fact) {
 		this.fact=fact;
 	}
