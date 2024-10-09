@@ -5,7 +5,6 @@
 
 meetone(Person, slot(MinTime, MaxTime)) :- free(Person,slot(StartTime, EndTime)),
                                     lte(StartTime, MinTime), gte(EndTime, MaxTime).
-                                % StartTime >= MinTime AND EndTime <= MaxTime.
 
 main :- findall(Person,
 		meetone(Person,slot(time(8,30,am),time(8,45,am))),
