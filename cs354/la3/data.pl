@@ -1,3 +1,6 @@
+% Some sample data, including people's names
+% and their availablility.
+
 free(ann,slot(time(8,0,am),time(9,0,am))).
 free(ann,slot(time(10,0,am),time(11,0,am))).
 free(ann,slot(time(8,0,pm),time(9,0,pm))).

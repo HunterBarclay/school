@@ -5,9 +5,10 @@
 % The second foo fact models the predicate under test,
 % which might evaluate to true or false, 
 
-% :- include('meet.pl').
-:- include('comp.pl').
-:- include('util.pl').
+% :- include('people.pl').
+% :- include('util.pl').
+
+
 
 % foo :- false.
 % foo :- true.
@@ -34,30 +35,55 @@
 
 % foo :- max(time(8,30,am), time(8,45,am), Min), print(Min), nl.
 
-% slotSpan(slot(time(3, 0, am), time(6, 0, am))).
 
-% slotBefore(slot(time(2, 0, am), time(4, 0, am))).
-% slotWithin(slot(time(4, 0, am), time(5, 0, am))).
-% slotOutside(slot(time(2, 0, am), time(7, 0, am))).
-% slotAfter(slot(time(5, 0, am), time(7, 0, am))).
+:- include('people.pl').
+:- include('util.pl').
 
-% testBefore :- write('Before: '), slotBefore(A), slotSpan(B), overlap(A, B, Out), writeSlot(Out), nl.
-% testWithin :- write('Within: '), slotWithin(A), slotSpan(B), overlap(A, B, Out), writeSlot(Out), nl.
-% testOutside  :- write('Outside: '), slotOutside(A), slotSpan(B), overlap(A, B, Out), writeSlot(Out), nl.
-% testAfter :- write('After: '), slotAfter(A), slotSpan(B), overlap(A, B, Out), writeSlot(Out), nl.
+slotSpan(slot(time(3, 0, am), time(6, 0, am))).
+slotBefore(slot(time(2, 0, am), time(4, 0, am))).
+slotWithin(slot(time(4, 0, am), time(5, 0, am))).
+slotOutside(slot(time(2, 0, am), time(7, 0, am))).
+slotAfter(slot(time(5, 0, am), time(7, 0, am))).
 
-% foo :- lt(time(8, 35, am), time(8, 36, am)).
-% foo :- testBefore, testWithin, testOutside, testAfter.
+% test('LTE 1', A) :- A = lte(time(12,30,am), time(1,15,am)).
+% test('LTE 2', A) :- A = lte(time(8,0,am), time(1,0,pm)).
+% test('LTE 3', A) :- A = lte(time(3,30,pm), time(3,31,pm)).
+% test('LTE 4', A) :- A = lte(time(12,30,am), time(12,30,am)).
+% test('LTE 5', A) :- A = (\+ lte(time(12,31,am), time(12,30,am))).
+% test('LTE 6', A) :- A = (\+ lte(time(12,31,pm), time(12,30,am))).
+% test('LTE 7', A) :- A = (\+ lte(time(1,31,am), time(12,30,am))).
 
-foo :- overlap(
-		slot(time(11,30,am), time(9,0,pm)),
-		slot(time(11,0,am), time(8,30,pm)),
-		Out
-	), writeSlot(Out), nl.
+% test('GTE 1', A) :- A = gte(time(1,15,am), time(12,30,am)).
+% test('GTE 2', A) :- A = gte(time(1,0,pm), time(8,0,am)).
+% test('GTE 3', A) :- A = gte(time(3,31,pm), time(3,30,pm)).
+% test('GTE 4', A) :- A = gte(time(12,30,am), time(12,30,am)).
+% test('GTE 5', A) :- A = (\+ gte(time(12,30,am), time(12,31,am))).
+% test('GTE 6', A) :- A = (\+ gte(time(12,30,am), time(12,31,pm))).
+test('GTE 7', A) :- A = eval(\+ gte(time(12,30,am), time(1,31,am))).
 
-main :- (foo,
-	write('foo is true');
-	write('foo is not true')),
-	nl, halt.
+% testMin1 :- min(time(8,0,am), time(10,0,am), Min), Min = time(8,0,am).
+
+% test('Min 1', A) :- A = testMin1.
+
+testBefore :- slotBefore(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(3,0,am),time(4,0,am)).
+testWithin :- slotWithin(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(4,0,am),time(5,0,am)).
+testOutside :- slotOutside(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(3,0,am),time(6,0,am)).
+testAfter :- slotAfter(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(5,0,am),time(6,0,am)).
+
+% I'm going to find Alain Colmerauer and make him explain this utter nonsense. If
+% I just write out the rule for testBefore inline, prolog segfaults, but if I
+% make it it's own rule, then it works perfect. What in the actual --------.
+test('Overlap Before', A) :- A = eval(testBefore).
+test('Overlap Within', A) :- A = eval(testWithin).
+% test('Overlap Outside', A) :- A = testOutside.
+% test('Overlap After', A) :- A = testAfter.
+
+evaluate_all([]).
+evaluate_all([[Name, Result]|Rest]) :- 
+	(Result, write('Pass - '), write(Name), nl, evaluate_all(Rest));
+	(write('Fail - '), write(Name), nl, evaluate_all(Rest)).
+
+main :- findall([Name, Result], test(Name, Result), Tests),
+	evaluate_all(Tests), halt.
 
 :- initialization(main).
