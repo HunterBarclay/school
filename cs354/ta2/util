@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ $1 == "clean" ]; then
+    rm gen*
+    rm *.class
+    rm test/test-*/gccerrs
+    rm test/test-*/scanerrs
+    rm test/test-*/gen*
+    rm test/test-*/inp
+    rm test/test-*/out*
+elif [ $1 == "build" ]; then
+    javac *.java
+elif [ $1 == "test" ]; then
+    [ -f Main.class ] || ./util build
+    [ -f Scanner.class ] || ./util build
+    cd test/
+    ./run
+    cd ..
+fi

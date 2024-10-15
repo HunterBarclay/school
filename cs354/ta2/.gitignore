@@ -1,0 +1,10 @@
+*.class
+gen*
+
+test/test-*/gccerrs
+test/test-*/scanerrs
+test/test-*/gen*
+test/test-*/inp
+test/test-*/out*
+test-scan/err-test-*
+test-scan/out-test-*
