@@ -1,3 +1,7 @@
+/**
+ * Read statement. I've decided to print a newline out after receiving input
+ * for consistency when piping in input.
+ */
 public class NodeStmtRd extends NodeStmt {
 
     private int pos;
@@ -15,6 +19,7 @@ public class NodeStmtRd extends NodeStmt {
             System.out.format("%s < ", this.id);
             sc = new java.util.Scanner(System.in);
             in = sc.nextDouble();
+            System.out.print("\n");
         } catch(Exception e) {
             throw new EvalException(this.pos, "Failed to read double.");
         } finally {
@@ -25,7 +30,7 @@ public class NodeStmtRd extends NodeStmt {
 
 	public String code() {
         return String.format(
-            "printf(\"%s < \"); scanf(\"%%lf\", &%s);",
+            "printf(\"%s < \"); scanf(\"%%lf\", &%s); printf(\"\\n\");",
             this.id, this.id
         );
     }

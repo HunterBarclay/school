@@ -59,8 +59,14 @@ To run the unit tests, use the following commands:
 
 As stated in [usage](#usage), this will run unit tests for the interpreter,
 translator, and the scanner. By default, if a `scan[n]` file isn't specified for
-the program to test against, the test will be skipped. I intentionally left
-out multiplier scanner tests to show this, but added scan tests for everything else.
+the program to test against, the test will be skipped.
 
 I've also added this feature for `exp[n]` files, in the event that I haven't updated a
 given test program to the new language grammar.
+
+I've left out a handful of tests to show this, as well as the fact that I found those particular
+tests redundant at the time.
+
+### Helpful note
+Before taking a look through the tests themselves, I'd definitely recommend running clean prior.
+It generates a lot of files, and it can be a mess looking through them.

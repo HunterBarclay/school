@@ -1,0 +1,4 @@
+x = 2;
+wr x;
+rd x;
+wr x
