@@ -1,7 +1,8 @@
-% Utility file for generic comparisons between times and slots,
-% as well as determining overlaps.
+% Operations for Data.
+% This file was created separately incase the grader would like to hotswap the provided
+% `data.pl` file for a different one.
 
-hello :- true.
+:- include('data.pl').
 
 % == Less than or Equal (lte) ==
 % True when given TimeA and TimeB, TimeA is before or at the same
@@ -56,23 +57,36 @@ max(A, B, Max) :- gte(A, B), Max = A; Max = B.
 % Type: Before
 % B |   *------*   |
 % A | *------*     |
-overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :-
+overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :- (\+ eq(MinA, MaxA)), (\+ eq(MinB, MaxB)),
 	lt(MinA, MinB), gt(MaxA, MinB), lte(MaxA, MaxB), MinOut = MinB, MaxOut = MaxA.
 
 % Type: Within
 % B |   *------*   |
 % A |     *--*     |
-overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :-
+overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :- (\+ eq(MinA, MaxA)), (\+ eq(MinB, MaxB)),
 	gte(MinA, MinB), lte(MaxA, MaxB), MinOut = MinA, MaxOut = MaxA.
 
 % Type: Outside
 % B |   *------*   |
 % A | *----------* |
-overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :-
+overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :- (\+ eq(MinA, MaxA)), (\+ eq(MinB, MaxB)),
 	lte(MinA, MinB), gte(MaxA, MaxB), MinOut = MinB, MaxOut = MaxB.
 
 % Type: After
 % B |   *------*   |
 % A |     *------* |
-overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :-
+overlap(slot(MinA, MaxA), slot(MinB, MaxB), slot(MinOut, MaxOut)) :- (\+ eq(MinA, MaxA)), (\+ eq(MinB, MaxB)),
 	gte(MinA, MinB), lt(MinA, MaxB), gte(MaxA, MaxB), MinOut = MinA, MaxOut = MaxB.
+
+% True when given a person Person and a time slot with times
+% MinTime and MaxTime, Person has a freetime slot that contains,
+% the time slot from MinTime to MaxTime in it's entirety.
+meetone(Person, slot(MinTime, MaxTime)) :-
+    free(Person,slot(StartTime, EndTime)),
+    lte(StartTime, MinTime), gte(EndTime, MaxTime).
+
+% True when given a list of people, there exists time slot Slot
+% when all individuals are available at the same time.
+meetPeople([], Slot) :- Slot = slot(time(1,0,am), time(11,59,pm)).
+meetPeople([Person|Rest], Slot) :- meetPeople(Rest, RestSlot),
+    free(Person, PersonSlot), overlap(RestSlot, PersonSlot, Slot).

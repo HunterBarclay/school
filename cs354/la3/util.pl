@@ -1,4 +1,5 @@
-% Utility file for useful clauses and rules.
+% Utility for Data.
+% This file provides printing functionality for testing/presentation purposes.
 
 % True given A, B, where B is A + 1.
 incr(A, B) :- B is A + 1.

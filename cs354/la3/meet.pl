@@ -1,6 +1,6 @@
 #!/usr/local/apps/local/bin/gprolog --consult-file
 
-:- include('people.pl').
+:- include('op.pl').
 :- include('uniq.pl').
 :- include('util.pl').
 
