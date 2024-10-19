@@ -2,10 +2,9 @@
 if [ $1 == "clean" ]; then
     rm gen*
     rm *.class
-    rm test/test-*/gccerrs
-    rm test/test-*/scanerrs
+    rm test/test-*/gccerrs*
+    rm test/test-*/scanerrs*
     rm test/test-*/gen*
-    rm test/test-*/inp
     rm test/test-*/out*
 elif [ $1 == "build" ]; then
     javac *.java

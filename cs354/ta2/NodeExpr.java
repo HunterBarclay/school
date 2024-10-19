@@ -38,12 +38,14 @@ public class NodeExpr extends Node {
 			this.expr.append(expr);
 	}
 
+	@Override
 	public double eval(Environment env) throws EvalException {
 		return expr==null
 			? term.eval(env)
 			: addop.op(expr.eval(env),term.eval(env));
 	}
 
+	@Override
 	public String code() {
 		return (expr==null ? "" : expr.code()+addop.code())+term.code();
 	}

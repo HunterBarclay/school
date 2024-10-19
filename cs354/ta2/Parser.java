@@ -17,6 +17,10 @@ public class Parser {
 		scanner.match(new Token(s));
 	}
 
+	private void match(Token t) throws SyntaxException {
+		scanner.match(t);
+	}
+
 	/**
 	 * Get the last scanned token.
 	 * 
@@ -33,6 +37,15 @@ public class Parser {
 	 */
 	private int pos() {
 		return scanner.pos();
+	}
+
+	private NodeRelop parseRelop() throws SyntaxException {
+		Token current = curr();
+		if (current.equals(Token.RELOPS)) {
+			match(current);
+			return new NodeRelop(pos(), current.lex());
+		}
+		return null;
 	}
 
 	/**
@@ -60,15 +73,22 @@ public class Parser {
 	 * @throws SyntaxException If token doesn't match grammar.
 	 */
 	private NodeAddop parseAddop() throws SyntaxException {
-		if (curr().equals(new Token("+"))) {
-			match("+");
-			return new NodeAddop(pos(), "+");
+		if (curr().equals(Token.OP_ADD)) {
+			match(Token.OP_ADD);
+			return new NodeAddop(pos(), Token.OP_ADD.lex());
 		}
-		if (curr().equals(new Token("-"))) {
-			match("-");
-			return new NodeAddop(pos(), "-");
+		if (curr().equals(Token.OP_SUB)) {
+			match(Token.OP_SUB);
+			return new NodeAddop(pos(), Token.OP_SUB.lex());
 		}
 		return null;
+	}
+
+	private NodeBoolExpr parseBoolExpr() throws SyntaxException {
+		NodeExpr exprA = parseExpr();
+		NodeRelop relop = parseRelop();
+		NodeExpr exprB = parseExpr();
+		return new NodeBoolExpr(exprA, relop, exprB);
 	}
 
 	/**
@@ -152,10 +172,59 @@ public class Parser {
 	 * @throws SyntaxException If token doesn't match grammar.
 	 */
 	private NodeStmt parseStmt() throws SyntaxException {
-		NodeAssn assn = parseAssn();
-		match(";");
-		NodeStmt stmt = new NodeStmt(assn);
-		return stmt;
+		if (curr().equals(Token.KEY_BEGIN)) {
+			match(Token.KEY_BEGIN);
+			NodeBlock block = parseBlock();
+			match(Token.KEY_END);
+			return new NodeStmtBlock(block);
+		} else if (curr().equals(Token.KEY_WHILE)) {
+			match(Token.KEY_WHILE);
+			NodeBoolExpr boolExpr = parseBoolExpr();
+			match(Token.KEY_DO);
+			NodeStmt stmt = parseStmt();
+			return new NodeStmtWhile(boolExpr, stmt);
+		} else if (curr().equals(Token.KEY_IF)) {
+			match(Token.KEY_IF);
+			NodeBoolExpr boolExpr = parseBoolExpr();
+			match(Token.KEY_THEN);
+			NodeStmt stmtTrue = parseStmt();
+			NodeStmt stmtFalse = null;
+			if (curr().equals(Token.KEY_ELSE)) {
+				match(Token.KEY_ELSE);
+				stmtFalse = parseStmt();
+			}
+			return new NodeStmtIf(boolExpr, stmtTrue, stmtFalse);
+		} else if (curr().equals(Token.KEY_WRITE)) {
+			match(Token.KEY_WRITE);
+			NodeExpr expr = parseExpr();
+			return new NodeStmtWr(expr);
+		} else if (curr().equals(Token.KEY_READ)) {
+			match(Token.KEY_READ);
+			if (!curr().equals(Token.IDENT_GENERIC)) {
+				throw new SyntaxException(pos(), Token.IDENT_GENERIC, curr());
+			}
+			String id = curr().lex();
+			match(Token.IDENT_GENERIC);
+			return new NodeStmtRd(pos(), id);
+		} else {
+			NodeAssn assn = parseAssn();
+			return new NodeStmtAssn(assn);
+		}
+	}
+
+	private NodeBlock parseBlock() throws SyntaxException {
+		NodeStmt stmt = parseStmt();
+		NodeBlock block = new NodeBlock(stmt, null);
+		if (curr().equals(Token.OP_SEMICOLON)) {
+			match(Token.OP_SEMICOLON);
+			block.append(parseBlock());
+		}
+		return block;
+	}
+
+	private NodeProg parseProg() throws SyntaxException {
+		NodeBlock block = parseBlock();
+		return new NodeProg(block);
 	}
 
 	/**
@@ -167,9 +236,9 @@ public class Parser {
 	public Node parse(String program) throws SyntaxException {
 		scanner = new Scanner(program);
 		scanner.next();
-		NodeStmt stmt = parseStmt();
+		NodeProg prog = parseProg();
 		match("EOF");
-		return stmt;
+		return prog;
 	}
 
 }

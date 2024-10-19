@@ -93,6 +93,15 @@ public class Scanner {
 	 * @param s Target set.
 	 */
 	private void initKeywords(Set<String> s) {
+		s.add("wr");
+		s.add("rd");
+		s.add("if");
+		s.add("then");
+		s.add("else");
+		s.add("while");
+		s.add("do");
+		s.add("begin");
+		s.add("end");
 	}
 
 	// constructor:
@@ -154,7 +163,7 @@ public class Scanner {
 	private boolean nextNumber() {
 		int old = pos;
 		many(digits);
-		if (program.charAt(pos) == '.') {
+		if (pos < program.length() && program.charAt(pos) == '.') {
 			pos++;
 			many(digits);
 			if (pos - old < 2) {

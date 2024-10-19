@@ -4,6 +4,9 @@
 // All evaluations share the same environment,
 // so they can share variables.
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 /**
  * Compiler/Interpreter, compiling some unnamed language to C.
  * Each command-line argument is an individual program that shares an
@@ -13,7 +16,7 @@
 public class Main {
 
 	private static void printUsage() {
-		System.out.println(
+		System.err.println(
 			"Usage:\n" +
 			"$ java Main [--help] <program>...\n"
 		);
@@ -22,20 +25,38 @@ public class Main {
 	public static void main(String[] args) {
 		if (args.length == 0 || args[0].equals("--help")) {
 			printUsage();
+			System.exit(1);
+			return;
+		}
+
+		if (args.length > 1) {
+			System.err.println("Too many arguments.");
+			printUsage();
+			System.exit(1);
+			return;
+		}
+
+		String program;
+		try {
+			program = Files.readString(Paths.get(args[0]));
+		} catch (Exception e) {
+			System.err.format("Failed to read program file '%s'.\n", args[0]);
+			System.exit(1);
 			return;
 		}
 
 		Parser parser = new Parser();
 		Environment env = new Environment();
-		String code = "";
-		for (String prog : args)
-			try {
-				Node node = parser.parse(prog);
-				node.eval(env);
-				code += node.code();
-			} catch (Exception e) {
-				System.err.println(e);
-			}
+		String code;
+		try {
+			Node node = parser.parse(program);
+			node.eval(env);
+			code = node.code();
+		} catch (Exception e) {
+			System.err.println(e);
+			System.exit(1);
+			return;
+		}
 		new Code(code, env);
 	}
 

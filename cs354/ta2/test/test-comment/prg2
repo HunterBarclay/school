@@ -9,4 +9,4 @@ The second time you fail to complete a lap before the sound, your test
 is over. The test will begin on the word start. On your mark.
 Get ready!… Start. ding
 */
-y = 5;
+y = 5

@@ -21,11 +21,11 @@ public class NodeAssn extends Node {
 	}
 
 	public double eval(Environment env) throws EvalException {
-		return env.put(id, new NodeWr(expr).eval(env));
+		return env.put(id, expr.eval(env));
 	}
 
 	public String code() {
-		return id + "=" + expr.code() + ";" + new NodeWr(expr).code();
+		return id + "=" + expr.code();
 	}
 
 }
