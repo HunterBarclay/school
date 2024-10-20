@@ -34,4 +34,23 @@ public class NodeStmtIf extends NodeStmt {
             );
         }
     }
+
+    @Override
+	protected Node[] children() {
+        if (this.stmtFalse == null) {
+            return new Node[]{ this.boolExpr, this.stmtTrue };
+        } else {
+            return new Node[]{ this.boolExpr, this.stmtTrue, this.stmtFalse };
+        }
+	}
+
+	@Override
+	public String toString() {
+        if (this.stmtFalse == null) {
+            return "stmt - 'if' boolexpr 'then' stmt";
+        } else {
+            return "stmt - 'if' boolexpr 'then' stmt 'else' stmt";
+        }
+	}
+
 }

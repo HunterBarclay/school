@@ -84,6 +84,7 @@ for t in test-* ; do
 
             # Interpreter Test
             export Code=$t/gen$prgnum
+            export Tree=$t/tree$prgnum
             eval java -cp .. Main "$t/prg$prgnum" < $t/inp$prgnum > $t/out$prgnum.i 2> $t/generrs$prgnum
             Compare $t i $prgnum
 

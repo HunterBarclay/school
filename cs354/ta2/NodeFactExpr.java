@@ -15,4 +15,14 @@ public class NodeFactExpr extends NodeFact {
 
 	public String code() { return "("+expr.code()+")"; }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ this.expr };
+	}
+
+	@Override
+	public String toString() {
+        return "fact - '(' expr ')'";
+	}
+
 }

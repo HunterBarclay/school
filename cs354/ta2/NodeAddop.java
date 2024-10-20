@@ -40,4 +40,14 @@ public class NodeAddop extends Node {
 
 	public String code() { return String.format(" %s ", addop); }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("addop - '%s'", this.addop);
+	}
+
 }

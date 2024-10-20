@@ -14,5 +14,15 @@ public class NodeStmtAssn extends NodeStmt {
 	}
 
 	public String code() { return assn.code() + ";"; }
+
+	@Override
+	protected Node[] children() {
+        return new Node[]{ this.assn };
+	}
+
+	@Override
+	public String toString() {
+        return "stmt - assn";
+	}
     
 }

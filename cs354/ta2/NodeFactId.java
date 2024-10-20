@@ -17,4 +17,14 @@ public class NodeFactId extends NodeFact {
 
 	public String code() { return id; }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("fact - '%s'", this.id);
+	}
+
 }

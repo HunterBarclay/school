@@ -10,4 +10,15 @@ public class NodeStmtBlock extends NodeStmt {
 	}
 
 	public String code() { return block.code(); }
+
+	@Override
+	protected Node[] children() {
+        return new Node[]{ this.block };
+	}
+
+	@Override
+	public String toString() {
+        return "stmt - 'begin' block 'end'";
+	}
+
 }

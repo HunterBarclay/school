@@ -28,4 +28,14 @@ public class NodeAssn extends Node {
 		return id + "=" + expr.code();
 	}
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ this.expr };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("assn - '%s' '=' expr", this.id);
+	}
+
 }

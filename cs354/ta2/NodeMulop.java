@@ -36,4 +36,14 @@ public class NodeMulop extends Node {
 
 	public String code() { return String.format(" %s ", mulop); }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("mulop - '%s'", this.mulop);
+	}
+
 }

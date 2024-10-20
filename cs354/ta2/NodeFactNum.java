@@ -15,4 +15,14 @@ public class NodeFactNum extends NodeFact {
 
 	public String code() { return num.contains(".") ? num : num + ".0"; }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("fact - '%s'", this.num);
+	}
+
 }

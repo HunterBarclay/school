@@ -50,4 +50,22 @@ public class NodeExpr extends Node {
 		return (expr==null ? "" : expr.code()+addop.code())+term.code();
 	}
 
+	@Override
+	protected Node[] children() {
+		if (this.expr == null) {
+			return new Node[]{ this.term };
+		} else {
+			return new Node[]{ this.term, this.addop, this.expr };
+		}
+	}
+
+	@Override
+	public String toString() {
+		if (this.expr == null) {
+			return "expr - term";
+		} else {
+			return "expr - term addop expr";
+		}
+	}
+
 }

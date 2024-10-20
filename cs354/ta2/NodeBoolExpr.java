@@ -19,4 +19,14 @@ public class NodeBoolExpr extends Node {
 		return String.format("%s %s %s", this.exprA, this.relop, this.exprB);
 	}
 
+    @Override
+	protected Node[] children() {
+		return new Node[]{ this.exprA, this.relop, this.exprB };
+	}
+
+	@Override
+	public String toString() {
+        return "boolexpr - expr relop expr";
+	}
+
 }

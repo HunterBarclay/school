@@ -5,6 +5,17 @@
 
 public abstract class Node {
 
+	public static final String UI_TOP_LEFT      = "┌";
+	public static final String UI_TOP_RIGHT     = "┐";
+	public static final String UI_BOTTOM_LEFT   = "└";
+	public static final String UI_BOTTOM_RIGHT  = "┘";
+	public static final String UI_TOP_BOTTOM    = "─";
+	public static final String UI_LEFT_RIGHT    = "│";
+	public static final String UI_CENTER_LEFT   = "├";
+	public static final String UI_CENTER_RIGHT  = "┤";
+	public static final String UI_TOP_CENTER    = "┬";
+	public static final String UI_BOTTOM_CENTER = "┴";
+
 	protected int pos=0;
 
 	/**
@@ -24,5 +35,34 @@ public abstract class Node {
 	 * @return Generated C code.
 	 */
 	public String code() { return ""; }
+
+	public String tree() {
+		StringBuilder builder = new StringBuilder();
+		this.tree(builder, "");
+		return builder.toString();
+	}
+
+	protected void tree(StringBuilder builder, String indent) {
+		builder.append(Node.UI_TOP_CENTER);
+		builder.append(" ");
+		builder.append(this.toString());
+		builder.append("\n");
+		Node[] children = this.children();
+		if (children.length == 0) {
+			return;
+		}
+		String midwayIndent = String.format("%s%s", indent, Node.UI_LEFT_RIGHT);
+		for (int i = 0; i < children.length - 1; ++i) {
+			builder.append(indent);
+			builder.append(Node.UI_CENTER_LEFT);
+			children[i].tree(builder, midwayIndent);
+		}
+		String endIndent = String.format("%s ", indent);
+		builder.append(indent);
+		builder.append(Node.UI_BOTTOM_LEFT);
+		children[children.length - 1].tree(builder, endIndent);
+	}
+
+	protected abstract Node[] children();
 
 }

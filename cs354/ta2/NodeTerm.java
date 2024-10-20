@@ -46,4 +46,22 @@ public class NodeTerm extends Node {
 		return (term==null ? "" : term.code()+mulop.code())+fact.code();
 	}
 
+	@Override
+	protected Node[] children() {
+		if (this.term == null) {
+			return new Node[]{ this.fact };
+		} else {
+			return new Node[]{ this.fact, this.mulop, this.term };
+		}
+	}
+
+	@Override
+	public String toString() {
+		if (this.term == null) {
+			return "term - fact";
+		} else {
+			return "term - fact mulop term";
+		}
+	}
+
 }

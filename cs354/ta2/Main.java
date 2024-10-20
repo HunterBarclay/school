@@ -7,6 +7,9 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 /**
  * Compiler/Interpreter, compiling some unnamed language to C.
  * Each command-line argument is an individual program that shares an
@@ -47,17 +50,28 @@ public class Main {
 
 		Parser parser = new Parser();
 		Environment env = new Environment();
-		String code;
+		Node parseTree;
 		try {
-			Node node = parser.parse(program);
-			node.eval(env);
-			code = node.code();
+			parseTree = parser.parse(program);
+			parseTree.eval(env);
 		} catch (Exception e) {
 			System.err.println(e);
 			System.exit(1);
 			return;
 		}
-		new Code(code, env);
+		new Code(parseTree.code(), env);
+
+		// Tree
+		String treeFile = System.getenv("Tree");
+		if (treeFile != null) {
+			try {
+				BufferedWriter f = new BufferedWriter(new FileWriter(treeFile));
+				f.write(parseTree.tree());
+				f.close();
+			} catch (Exception e) {
+				System.err.println(e);
+			}
+		}
 	}
 
 }

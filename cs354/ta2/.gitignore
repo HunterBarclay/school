@@ -5,5 +5,6 @@ test/test-*/gccerrs*
 test/test-*/scanerrs*
 test/test-*/gen*
 test/test-*/out*
+test/test-*/tree*
 test-scan/err-test-*
 test-scan/out-test-*

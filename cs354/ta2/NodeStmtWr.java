@@ -21,4 +21,15 @@ public class NodeStmtWr extends NodeStmt {
             this.expr.code()
         );
     }
+
+    @Override
+	protected Node[] children() {
+        return new Node[]{ this.expr };
+	}
+
+	@Override
+	public String toString() {
+        return "stmt - 'wr' expr";
+	}
+
 }

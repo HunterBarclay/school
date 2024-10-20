@@ -12,4 +12,14 @@ public class NodeProg extends Node {
 
 	public String code() { return block.code(); }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ this.block };
+	}
+
+	@Override
+	public String toString() {
+        return "prog - block";
+	}
+
 }

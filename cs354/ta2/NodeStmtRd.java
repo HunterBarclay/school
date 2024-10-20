@@ -35,4 +35,14 @@ public class NodeStmtRd extends NodeStmt {
         );
     }
 
+    @Override
+	protected Node[] children() {
+        return new Node[]{ };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("stmt - 'rd' '%s'", this.id);
+	}
+
 }

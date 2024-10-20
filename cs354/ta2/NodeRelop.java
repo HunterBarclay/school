@@ -42,4 +42,14 @@ public class NodeRelop extends Node {
         return Translator.translate(this.relop);
     }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ };
+	}
+
+	@Override
+	public String toString() {
+        return String.format("relop - '%s'", this.relop);
+	}
+
 }

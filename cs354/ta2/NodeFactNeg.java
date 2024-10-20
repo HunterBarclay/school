@@ -15,4 +15,14 @@ public class NodeFactNeg extends NodeFact {
 
 	public String code() { return "-"+fact.code(); }
 
+	@Override
+	protected Node[] children() {
+        return new Node[]{ this.fact };
+	}
+
+	@Override
+	public String toString() {
+        return "fact - '-' fact";
+	}
+
 }

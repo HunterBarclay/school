@@ -21,4 +21,15 @@ public class NodeStmtWhile extends NodeStmt {
             this.stmt.code()
         );
     }
+
+    @Override
+	protected Node[] children() {
+        return new Node[]{ this.boolExpr, this.stmt };
+	}
+
+	@Override
+	public String toString() {
+        return "stmt - 'while' boolexpr 'then' stmt";
+	}
+
 }

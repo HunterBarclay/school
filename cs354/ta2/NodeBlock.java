@@ -42,4 +42,23 @@ public class NodeBlock extends Node {
             this.block.buildStatements(builder);
         }
 	}
+
+    @Override
+	protected Node[] children() {
+        if (this.block == null) {
+            return new Node[]{ this.stmt };
+        } else {
+            return new Node[]{ this.stmt, this.block };
+        }
+	}
+
+	@Override
+	public String toString() {
+        if (this.block == null) {
+            return "block - stmt";
+        } else {
+            return "block - stmt ';' block";
+        }
+	}
+
 }
