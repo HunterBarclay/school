@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "prg2": "cpp"
+        "prg2": "cpp",
+        "prg1": "cpp"
     }
 }

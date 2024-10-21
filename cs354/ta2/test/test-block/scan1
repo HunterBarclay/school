@@ -1,0 +1,14 @@
+<begin,begin>
+<id,a>
+<=,=>
+<num,4.2>
+<;,;>
+<id,b>
+<=,=>
+<num,2.1>
+<;,;>
+<wr,wr>
+<id,a>
+<+,+>
+<id,b>
+<end,end>

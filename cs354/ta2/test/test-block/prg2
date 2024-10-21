@@ -1,0 +1,9 @@
+begin
+    a = 0.1;
+    begin
+        b = 2.5;
+        begin
+            wr a + b
+        end
+    end
+end

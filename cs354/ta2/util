@@ -5,6 +5,7 @@ if [ $1 == "clean" ]; then
     rm test/test-*/gccerrs*
     rm test/test-*/scanerrs*
     rm test/test-*/gen*
+    rm test/test-*/tree*
     rm test/test-*/out*
 elif [ $1 == "build" ]; then
     javac *.java

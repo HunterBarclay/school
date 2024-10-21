@@ -43,24 +43,31 @@ public abstract class Node {
 	}
 
 	protected void tree(StringBuilder builder, String indent) {
-		builder.append(Node.UI_TOP_CENTER);
-		builder.append(" ");
-		builder.append(this.toString());
-		builder.append("\n");
 		Node[] children = this.children();
 		if (children.length == 0) {
-			return;
-		}
-		String midwayIndent = String.format("%s%s", indent, Node.UI_LEFT_RIGHT);
-		for (int i = 0; i < children.length - 1; ++i) {
+			builder.append(Node.UI_TOP_BOTTOM);
+			builder.append(" ");
+			builder.append(this.toString());
+			builder.append("\n");
+		} else {
+			builder.append(Node.UI_TOP_CENTER);
+			builder.append(" ");
+			builder.append(this.toString());
+			builder.append("\n");
+		
+			String midwayIndent = String.format("%s%s", indent, Node.UI_LEFT_RIGHT);
+			for (int i = 0; i < children.length - 1; ++i) {
+				builder.append(indent);
+				builder.append(Node.UI_CENTER_LEFT);
+				children[i].tree(builder, midwayIndent);
+			}
+			String endIndent = String.format("%s ", indent);
 			builder.append(indent);
-			builder.append(Node.UI_CENTER_LEFT);
-			children[i].tree(builder, midwayIndent);
+			builder.append(Node.UI_BOTTOM_LEFT);
+			children[children.length - 1].tree(builder, endIndent);
 		}
-		String endIndent = String.format("%s ", indent);
-		builder.append(indent);
-		builder.append(Node.UI_BOTTOM_LEFT);
-		children[children.length - 1].tree(builder, endIndent);
+
+		
 	}
 
 	protected abstract Node[] children();

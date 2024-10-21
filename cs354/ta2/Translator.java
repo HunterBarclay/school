@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class Translator {
 
-    private static HashMap<String, String> cTranslations = new HashMap<String, String>();
+    private static HashMap<String, String> cTranslations;
 
     private Translator() { }
 
@@ -15,6 +15,11 @@ public class Translator {
     public static String translate(String s) {
         ensureCTranslations();
         String translation = cTranslations.get(s);
+        if (translation == null) {
+            Logger.debug("RELOP: No translation");
+        } else {
+            Logger.debug("RELOP: Translation Found: %s", translation);
+        }
         return translation == null ? s : translation;
     }
 
@@ -22,6 +27,7 @@ public class Translator {
         if (Translator.cTranslations != null)
             return;
 
+        cTranslations = new HashMap<String, String>();
         cTranslations.put("<>", "!=");
     }
 }

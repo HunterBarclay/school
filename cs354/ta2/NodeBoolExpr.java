@@ -16,7 +16,7 @@ public class NodeBoolExpr extends Node {
 
 	@Override
 	public String code() {
-		return String.format("%s %s %s", this.exprA, this.relop, this.exprB);
+		return String.format("%s %s %s", this.exprA.code(), this.relop.code(), this.exprB.code());
 	}
 
     @Override

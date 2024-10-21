@@ -1,0 +1,14 @@
+<id,a>
+<=,=>
+<num,5>
+<;,;>
+<if,if>
+<id,a>
+<==,==>
+<num,5>
+<then,then>
+<wr,wr>
+<num,1>
+<else,else>
+<wr,wr>
+<num,0>

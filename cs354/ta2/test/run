@@ -73,7 +73,7 @@ for t in test-* ; do
             eval java -cp .. Scanner \""$(cat $p)"\" > $t/out$prgnum.s 2> $t/scanerrs$prgnum
             Compare $t s $prgnum
         else
-            printf "[%s] Scanner:\t\033[2;3mskipped\033[0m\n" $prgnum
+            printf "[%s] Scanner:\t\t\033[2;3mskipped\033[0m\n" $prgnum
             skipped=$((skipped+1))
         fi
 
