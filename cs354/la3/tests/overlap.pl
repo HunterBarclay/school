@@ -22,12 +22,12 @@ test('Overlap After', A) :- A = overlap(
 	slot(time(5, 0, am), time(6, 0, am))
 ).
 
-test('Overlap After INV', A) :- A = (\+ overlap(
+test('Overlap After Invalid', A) :- A = (\+ overlap(
 	slot(time(5, 0, am), time(7, 0, am)),
 	slot(time(3, 0, am), time(6, 0, am)),
 	slot(time(5, 0, am), time(7, 0, am))
 )).
-test('Overlap Within INV', A) :- A = (\+ overlap(
+test('Overlap Within Invalid', A) :- A = (\+ overlap(
 	slot(time(4, 0, am), time(4, 0, am)),
 	slot(time(3, 0, am), time(6, 0, am)),
 	slot(time(4, 0, am), time(4, 0, am))

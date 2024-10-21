@@ -41,14 +41,6 @@ lt(TimeA, TimeB) :- lte(TimeA, TimeB), \+ eq(TimeA, TimeB).
 % True if gte(TimeA, TimeB) is true, but eq(TimeA, TimeB) is not.
 gt(TimeA, TimeB) :- gte(TimeA, TimeB), \+ eq(TimeA, TimeB).
 
-% == Minimum (min) ==
-% True when given time A, B, and Min, Min is the earliest time between the two.
-min(A, B, Min) :- lte(A, B), Min = A; Min = B.
-
-% == Maximum (max) ==
-% True when given time A, B, and Max, Max is the latest time between the two.
-max(A, B, Max) :- gte(A, B), Max = A; Max = B.
-
 % == Overlap (overlap) ==
 % True if given time slots A, B, and Out, each with Min and Max times,
 % Out is the longest time slot that can overlap both A and B. See comments
