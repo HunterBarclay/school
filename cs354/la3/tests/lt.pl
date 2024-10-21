@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Less Than Tests
 % Ensures that lt can determine a given time A is less
 % than a given time b. The definition is combination of

@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Operations for Data.
 % This file was created separately incase the grader would like to hotswap the provided
 % `data.pl` file for a different one.

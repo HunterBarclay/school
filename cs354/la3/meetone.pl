@@ -1,5 +1,8 @@
 #!/usr/local/apps/local/bin/gprolog --consult-file
 
+% Author: James Buffenbarger, Hunter Barclay
+% Date: Oct. 21st, 2024
+
 :- include('op.pl').
 :- include('util.pl').
 

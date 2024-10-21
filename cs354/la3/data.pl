@@ -1,3 +1,5 @@
+% Author: James Buffenbarger
+% Date: ?
 % Some sample data, including people's names
 % and their availablility.
 

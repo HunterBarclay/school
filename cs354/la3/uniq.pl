@@ -1,3 +1,6 @@
+% Author: James Buffenbarger
+% Date: ?
+
 notin(_, []).
 notin(V, [H|T]) :- V \= H, notin(V, T).
 

@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Equals Tests
 % Ensure eq can determine if two times are the same.
 

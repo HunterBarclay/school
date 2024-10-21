@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Greather than or Equal to Tests
 % Ensure GTE is determined correctly.
 

@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Greater Than Tests
 % Ensures that gt can determine a given time A is greater
 % than a given time b. The definition is combination of

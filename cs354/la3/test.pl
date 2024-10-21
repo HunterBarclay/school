@@ -1,9 +1,10 @@
 #!/usr/local/apps/local/bin/gprolog --consult-file
 
-% This program shows how to "unit test" a predicate, named foo.
-% The first foo fact prevents an "existence_error".
-% The second foo fact models the predicate under test,
-% which might evaluate to true or false, 
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
+% Testing Suite
+% This testing suite matches all testing rules, evaluates their second parameter,
+% then prints to the console accordingly.
 
 :- include('op.pl').
 :- include('util.pl').

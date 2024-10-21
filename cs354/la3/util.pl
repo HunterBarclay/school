@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Utility for Data.
 % This file provides printing functionality for testing/presentation purposes.
 

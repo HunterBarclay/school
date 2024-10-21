@@ -1,3 +1,5 @@
+% Author: Hunter Barclay
+% Date: Oct. 21st, 2024
 % Meet People Tests
 % Test to ensure the unique overlaps in peoples schedules are found.
 
