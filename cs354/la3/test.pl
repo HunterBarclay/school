@@ -37,6 +37,7 @@
 
 :- include('op.pl').
 :- include('util.pl').
+:- include('uniq.pl').
 
 slotSpan(slot(time(3, 0, am), time(6, 0, am))).
 
@@ -47,21 +48,8 @@ slotAfter(slot(time(5, 0, am), time(7, 0, am))).
 :- include('tests/lte.pl').
 :- include('tests/gte.pl').
 :- include('tests/overlap.pl').
-
-% testMin1 :- min(time(8,0,am), time(10,0,am), Min), Min = time(8,0,am).
-
-% test('Min 1', A) :- A = testMin1.
-
-% testWithin :- slotWithin(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(4,0,am),time(5,0,am)).
-% testOutside :- slotOutside(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(3,0,am),time(6,0,am)).
-% testAfter :- slotAfter(A), slotSpan(B), overlap(A, B, Out), Out = slot(time(5,0,am),time(6,0,am)).
-
-% I'm going to find Alain Colmerauer and make him explain this utter nonsense. If
-% I just write out the rule for testBefore inline, prolog segfaults, but if I
-% make it it's own rule, then it works perfect. What in the actual --------.
-% test('Overlap Within', A) :- A = false.
-% test('Overlap Outside', A) :- A = testOutside.
-% test('Overlap After', A) :- A = testAfter.
+:- include('tests/meetone.pl').
+:- include('tests/meetpeople.pl').
 
 evaluate_all([]).
 evaluate_all([[Name, Result]|Rest]) :- 

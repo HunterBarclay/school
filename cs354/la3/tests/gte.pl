@@ -1,3 +1,6 @@
+% Greather than or Equal to Tests
+% Ensure GTE is determined correctly.
+
 test('GTE 1', A) :- A = gte(time(1,15,am), time(12,30,am)).
 test('GTE 2', A) :- A = gte(time(1,0,pm), time(8,0,am)).
 test('GTE 3', A) :- A = gte(time(3,31,pm), time(3,30,pm)).

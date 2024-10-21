@@ -87,6 +87,6 @@ meetone(Person, slot(MinTime, MaxTime)) :-
 
 % True when given a list of people, there exists time slot Slot
 % when all individuals are available at the same time.
-meetPeople([], Slot) :- Slot = slot(time(1,0,am), time(11,59,pm)).
+meetPeople([], Slot) :- Slot = slot(time(12,0,am), time(11,59,pm)).
 meetPeople([Person|Rest], Slot) :- meetPeople(Rest, RestSlot),
     free(Person, PersonSlot), overlap(RestSlot, PersonSlot, Slot).

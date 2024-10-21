@@ -1,3 +1,6 @@
+% Less than or Equal to Tests
+% Ensure LTE is determined correctly.
+
 test('LTE 1', A) :- A = lte(time(12,30,am), time(1,15,am)).
 test('LTE 2', A) :- A = lte(time(8,0,am), time(1,0,pm)).
 test('LTE 3', A) :- A = lte(time(3,30,pm), time(3,31,pm)).

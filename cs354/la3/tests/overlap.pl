@@ -1,3 +1,6 @@
+% Overlap Tests
+% Ensure the proper overlap between two time slots is found.
+
 test('Overlap Before', A) :- A = overlap(
 	slot(time(2, 0, am), time(4, 0, am)),
 	slot(time(3, 0, am), time(6, 0, am)),
