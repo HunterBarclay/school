@@ -1,0 +1,8 @@
+a = 3;
+b = 0;
+while a > 0 do begin
+    rd input;
+    b = b + input;
+    a = a - 1
+end;
+wr b
