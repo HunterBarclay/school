@@ -13,7 +13,12 @@ import java.util.Map;
  */
 public class Environment {
 
+	private java.util.Scanner m_scanner;
 	private Map<String, Double> m_double_map = new HashMap<String, Double>();
+
+	public Environment() {
+		this.m_scanner = new java.util.Scanner(System.in);
+	}
 
 	/**
 	 * Assigns value to a given variable.
@@ -64,6 +69,10 @@ public class Environment {
 		StringBuilder builder = new StringBuilder();
 		doublesToC(builder);
 		return builder.toString();
+	}
+
+	public double readDouble() {
+		return this.m_scanner.nextDouble();
 	}
 
 }

@@ -1,0 +1,10 @@
+a = 0;
+b = 1;
+rd n;
+while n > 0 do begin
+    x = b;
+    b = a + b;
+    a = x;
+    n = n - 1
+end;
+wr a

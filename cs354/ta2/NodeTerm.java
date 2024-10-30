@@ -47,6 +47,13 @@ public class NodeTerm extends Node {
 	}
 
 	@Override
+	public void loadEnvironment(Environment env) {
+		this.fact.loadEnvironment(env);
+		if (this.mulop != null) this.mulop.loadEnvironment(env);
+		if (this.term != null) this.term.loadEnvironment(env);
+	}
+
+	@Override
 	protected Node[] children() {
 		if (this.term == null) {
 			return new Node[]{ this.fact };

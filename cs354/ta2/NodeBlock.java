@@ -17,6 +17,12 @@ public class NodeBlock extends Node {
     }
 
     @Override
+	public void loadEnvironment(Environment env) {
+        this.stmt.loadEnvironment(env);
+        if (this.block != null) this.block.loadEnvironment(env);
+    }
+
+    @Override
 	public double eval(Environment env) throws EvalException {
 		double val = this.stmt.eval(env);
         if (this.block != null) {

@@ -36,6 +36,14 @@ public class NodeStmtIf extends NodeStmt {
     }
 
     @Override
+	public void loadEnvironment(Environment env) {
+        this.boolExpr.loadEnvironment(env);
+        this.stmtTrue.loadEnvironment(env);
+        if (this.stmtFalse != null)
+            this.stmtFalse.loadEnvironment(env);
+    }
+
+    @Override
 	protected Node[] children() {
         if (this.stmtFalse == null) {
             return new Node[]{ this.boolExpr, this.stmtTrue };

@@ -39,6 +39,13 @@ public class NodeExpr extends Node {
 	}
 
 	@Override
+	public void loadEnvironment(Environment env) {
+        this.term.loadEnvironment(env);
+		if (this.addop != null) this.addop.loadEnvironment(env);
+		if (this.expr != null) this.expr.loadEnvironment(env);
+    }
+
+	@Override
 	public double eval(Environment env) throws EvalException {
 		return expr==null
 			? term.eval(env)

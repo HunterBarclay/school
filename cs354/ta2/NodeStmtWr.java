@@ -23,6 +23,11 @@ public class NodeStmtWr extends NodeStmt {
     }
 
     @Override
+	public void loadEnvironment(Environment env) {
+		this.expr.loadEnvironment(env);
+	}
+
+    @Override
 	protected Node[] children() {
         return new Node[]{ this.expr };
 	}

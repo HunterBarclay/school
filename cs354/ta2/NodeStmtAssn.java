@@ -10,10 +10,15 @@ public class NodeStmtAssn extends NodeStmt {
 	}
 
 	public double eval(Environment env) throws EvalException {
-		return assn.eval(env);
+		return this.assn.eval(env);
 	}
 
-	public String code() { return assn.code() + ";"; }
+	public String code() { return this.assn.code() + ";"; }
+
+	@Override
+	public void loadEnvironment(Environment env) {
+		this.assn.loadEnvironment(env);
+    }
 
 	@Override
 	protected Node[] children() {

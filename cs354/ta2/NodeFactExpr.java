@@ -10,10 +10,15 @@ public class NodeFactExpr extends NodeFact {
 	}
 
 	public double eval(Environment env) throws EvalException {
-		return expr.eval(env);
+		return this.expr.eval(env);
 	}
 
-	public String code() { return "("+expr.code()+")"; }
+	public String code() { return "(" + this.expr.code() + ")"; }
+
+	@Override
+	public void loadEnvironment(Environment env) {
+        this.expr.loadEnvironment(env);
+    }
 
 	@Override
 	protected Node[] children() {

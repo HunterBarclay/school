@@ -23,6 +23,12 @@ public class NodeStmtWhile extends NodeStmt {
     }
 
     @Override
+	public void loadEnvironment(Environment env) {
+        this.boolExpr.loadEnvironment(env);
+        this.stmt.loadEnvironment(env);
+    }
+
+    @Override
 	protected Node[] children() {
         return new Node[]{ this.boolExpr, this.stmt };
 	}

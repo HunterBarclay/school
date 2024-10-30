@@ -12,10 +12,13 @@ public class NodeFactId extends NodeFact {
 	}
 
 	public double eval(Environment env) throws EvalException {
-		return env.get(pos,id);
+		return env.get(this.pos, this.id);
 	}
 
-	public String code() { return id; }
+	public String code() { return this.id; }
+
+	@Override
+	public void loadEnvironment(Environment env) { }
 
 	@Override
 	protected Node[] children() {

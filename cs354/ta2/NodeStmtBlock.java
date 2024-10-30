@@ -6,10 +6,15 @@ public class NodeStmtBlock extends NodeStmt {
 	}
 
 	public double eval(Environment env) throws EvalException {
-		return block.eval(env);
+		return this.block.eval(env);
 	}
 
-	public String code() { return block.code(); }
+	public String code() { return this.block.code(); }
+
+	@Override
+	public void loadEnvironment(Environment env) {
+		this.block.loadEnvironment(env);
+    }
 
 	@Override
 	protected Node[] children() {

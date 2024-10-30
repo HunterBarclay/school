@@ -31,10 +31,13 @@ public class NodeMulop extends Node {
 			return o1*o2;
 		if (mulop.equals("/"))
 			return o1/o2;
-		throw new EvalException(pos,"bogus mulop: "+mulop);
+		throw new EvalException(pos,"bogus mulop: " + this.mulop);
 	}
 
-	public String code() { return String.format(" %s ", mulop); }
+	public String code() { return String.format(" %s ", this.mulop); }
+
+	@Override
+	public void loadEnvironment(Environment env) { }
 
 	@Override
 	protected Node[] children() {

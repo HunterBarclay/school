@@ -9,6 +9,13 @@ public class NodeBoolExpr extends Node {
         this.exprB = exprB;
     }
 
+	@Override
+	public void loadEnvironment(Environment env) {
+        this.exprA.loadEnvironment(env);
+		this.exprB.loadEnvironment(env);
+		this.relop.loadEnvironment(env);
+    }
+
     @Override
 	public double eval(Environment env) throws EvalException {
 		return this.relop.op(this.exprA.eval(env), this.exprB.eval(env));

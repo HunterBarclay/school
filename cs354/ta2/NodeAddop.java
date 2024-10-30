@@ -38,7 +38,11 @@ public class NodeAddop extends Node {
 		throw new EvalException(pos,"bogus addop: "+addop);
 	}
 
+	@Override
 	public String code() { return String.format(" %s ", addop); }
+
+	@Override
+	public void loadEnvironment(Environment env) { }
 
 	@Override
 	protected Node[] children() {

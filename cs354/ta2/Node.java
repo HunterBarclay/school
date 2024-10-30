@@ -19,6 +19,17 @@ public abstract class Node {
 	protected int pos=0;
 
 	/**
+	 * Load the environment with any identifiers that are established. Originally
+	 * this was done by interpreting the program, which would naturally assign the
+	 * variables, but I've discovered that if a variable is defined in a block that
+	 * is never used, the environment didn't know about it, and the generated C code
+	 * would omit it.
+	 * 
+	 * @param env Environment to track variables.
+	 */
+	public abstract void loadEnvironment(Environment env);
+
+	/**
 	 * Evaluate a given node, determine the result or throw evaluation exception.
 	 * 
 	 * @param env Environment to evaluate node in.

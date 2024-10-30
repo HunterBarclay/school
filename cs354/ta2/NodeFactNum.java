@@ -10,10 +10,13 @@ public class NodeFactNum extends NodeFact {
 	}
 
 	public double eval(Environment env) throws EvalException {
-		return Double.parseDouble(num);
+		return Double.parseDouble(this.num);
 	}
 
-	public String code() { return num.contains(".") ? num : num + ".0"; }
+	public String code() { return this.num.contains(".") ? this.num : this.num + ".0"; }
+
+	@Override
+	public void loadEnvironment(Environment env) { }
 
 	@Override
 	protected Node[] children() {

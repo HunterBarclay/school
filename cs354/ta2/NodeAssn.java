@@ -29,6 +29,13 @@ public class NodeAssn extends Node {
 	}
 
 	@Override
+	public void loadEnvironment(Environment env) {
+		Logger.debug("Preloading id %s", id);
+		env.put(id, 0);
+		this.expr.loadEnvironment(env);
+	}
+
+	@Override
 	protected Node[] children() {
         return new Node[]{ this.expr };
 	}

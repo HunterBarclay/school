@@ -14,16 +14,14 @@ public class NodeStmtRd extends NodeStmt {
 
     public double eval(Environment env) throws EvalException {
         double in = 0;
-        java.util.Scanner sc = null;
         try {
             System.out.format("%s < ", this.id);
-            sc = new java.util.Scanner(System.in);
-            in = sc.nextDouble();
+            in = env.readDouble();
             System.out.print("\n");
+            Logger.debug("Read in '%f'", in);
         } catch(Exception e) {
+            e.printStackTrace(System.err);
             throw new EvalException(this.pos, "Failed to read double.");
-        } finally {
-            if (sc != null) sc.close();
         }
         return env.put(id, in);
 	}
@@ -33,6 +31,12 @@ public class NodeStmtRd extends NodeStmt {
             "printf(\"%s < \"); scanf(\"%%lf\", &%s); printf(\"\\n\");",
             this.id, this.id
         );
+    }
+
+    @Override
+    public void loadEnvironment(Environment env) {
+		Logger.debug("Preloading id %s", id);
+        env.put(id, 0);
     }
 
     @Override

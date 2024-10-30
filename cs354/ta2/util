@@ -13,6 +13,6 @@ elif [ $1 == "test" ]; then
     [ -f Main.class ] || ./util build
     [ -f Scanner.class ] || ./util build
     cd test/
-    ./run
+    ./run $2
     cd ..
 fi

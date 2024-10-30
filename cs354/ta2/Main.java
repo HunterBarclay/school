@@ -53,6 +53,8 @@ public class Main {
 		Node parseTree;
 		try {
 			parseTree = parser.parse(program);
+			dumpTree(parseTree);
+			parseTree.loadEnvironment(env);
 			parseTree.eval(env);
 		} catch (Exception e) {
 			System.err.println(e);
@@ -60,8 +62,9 @@ public class Main {
 			return;
 		}
 		new Code(parseTree.code(), env);
+	}
 
-		// Tree
+	public static void dumpTree(Node parseTree) {
 		String treeFile = System.getenv("Tree");
 		if (treeFile != null) {
 			try {

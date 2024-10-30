@@ -43,6 +43,9 @@ public class NodeRelop extends Node {
     }
 
 	@Override
+	public void loadEnvironment(Environment env) { }
+
+	@Override
 	protected Node[] children() {
         return new Node[]{ };
 	}
