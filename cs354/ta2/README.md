@@ -1,6 +1,6 @@
-# Translation Assignment - 1
+# Translation Assignment - 2
 - Author: Hunter Barclay
-- Date: Oct. 19th, 2024
+- Date: Oct. 31th, 2024
 - Course: CS 354
 
 ## Files
@@ -9,10 +9,12 @@
 - `*.java` -> Java source files that make up the interpreter and compiler. See files for further details.
 - `test/test-*/` -> Test directories that contain tests focused on a specific aspect. Each of these directories
 	include out files will dumps from the program, scanner, etc. as well as err files that contain dumps from
-	the error stream of the program for debugging.
+	the error stream of the program for debugging. See [Unit Testing Files](#unit-testing-files) for details on
+	contained files.
 
 ### Unit Testing Files
-Each file name is suffixed with the program number it is referring to.
+Each file name is suffixed with the program number it is referring to. Some files may be
+omitted in the actual directory, see [Testing](#testing) for details on test skipping.
 
 - `prg[num]` -> Test program to compile.
 - `inp[num]` -> File to feed into the input stream the translated program and interpreter when running them.
@@ -35,7 +37,8 @@ included `util` to provided control beyond just running unit tests. `util` has
 the following usage:
 
 ```
-./util <build|test|clean>
+./util <build|test|clean> [pattern]
+	pattern		A regex pattern for selecting specific tests.
 
 	COMMAND		DESCRIPTION
 	build		Build the java program.
@@ -47,14 +50,21 @@ the following usage:
 				pattern: "gen.*".
 ```
 
+The `test-filter` is also implemented in the `test/run` script.
+
 ## Testing
 To run the unit tests, use the following commands:
 
 ```bash
-# This first command is optional.
+# This first command is optional. If 'Main.class' or 'Scanner.class' is missing, it will
+# invoke the build command.
 ./util build
 
+# Run all tests.
 ./util test
+
+# To filter specific tests, use regex pattern.
+./util test <pattern>
 ```
 
 As stated in [usage](#usage), this will run unit tests for the interpreter,
