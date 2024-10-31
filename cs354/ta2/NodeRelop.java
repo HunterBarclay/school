@@ -1,3 +1,16 @@
+/**
+ * Relational Operator node.
+ * 
+ * <pre>
+ * Grammar:
+ * relop: '<'
+ *      | '<='
+ *      | '>'
+ *      | '>='
+ *      | '<>'
+ *      | '=='
+ * <pre>
+ */
 public class NodeRelop extends Node {
     
 	private String relop;
@@ -38,8 +51,9 @@ public class NodeRelop extends Node {
         );
 	}
 
+	@Override
 	public String code() {
-        return Translator.translate(this.relop);
+        return Translator.getInstance().translate(this.relop);
     }
 
 	@Override

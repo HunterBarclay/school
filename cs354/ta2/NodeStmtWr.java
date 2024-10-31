@@ -4,10 +4,16 @@ public class NodeStmtWr extends NodeStmt {
 
     NodeExpr expr;
 
+    /**
+     * Constructs a write statement.
+     * 
+     * @param expr Expression to write to console.
+     */
     public NodeStmtWr(NodeExpr expr) {
         this.expr = expr;
     }
 
+    @Override
     public double eval(Environment env) throws EvalException {
         double val = expr.eval(env);
         DecimalFormat formatter = new DecimalFormat("0.#####");
@@ -15,6 +21,7 @@ public class NodeStmtWr extends NodeStmt {
         return val;
 	}
 
+    @Override
 	public String code() {
         return String.format(
             "printf(\"> %%g\\n\", %s);",

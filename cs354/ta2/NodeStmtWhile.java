@@ -2,11 +2,18 @@ public class NodeStmtWhile extends NodeStmt {
     NodeBoolExpr boolExpr;
     NodeStmt stmt;
 
+    /**
+     * Constructs a while statement.
+     * 
+     * @param boolExpr Boolean expression to control looping mechanism.
+     * @param stmt Statement to execute everytime boolexpr is true.
+     */
     public NodeStmtWhile(NodeBoolExpr boolExpr, NodeStmt stmt) {
         this.boolExpr = boolExpr;
         this.stmt = stmt;
     }
 
+    @Override
     public double eval(Environment env) throws EvalException {
         while (this.boolExpr.eval(env) == 1) {
             this.stmt.eval(env);
@@ -14,6 +21,7 @@ public class NodeStmtWhile extends NodeStmt {
         return Double.NaN;
 	}
 
+    @Override
 	public String code() {
         return String.format(
             "while (%s) %s",

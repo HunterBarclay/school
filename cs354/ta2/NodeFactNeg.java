@@ -9,10 +9,12 @@ public class NodeFactNeg extends NodeFact {
 		this.fact=fact;
 	}
 
+	@Override
 	public double eval(Environment env) throws EvalException {
 		return -this.fact.eval(env);
 	}
 
+	@Override
 	public String code() { return "-"+this.fact.code(); }
 
 	@Override

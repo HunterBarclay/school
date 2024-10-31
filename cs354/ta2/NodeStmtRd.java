@@ -1,17 +1,20 @@
-/**
- * Read statement. I've decided to print a newline out after receiving input
- * for consistency when piping in input.
- */
 public class NodeStmtRd extends NodeStmt {
 
     private int pos;
     private String id;
 
+    /**
+     * Constructs a read statement.
+     * 
+     * @param pos Position of the node in source text.
+     * @param id Identifier to store read result in.
+     */
     public NodeStmtRd(int pos, String id) {
         this.pos = pos;
         this.id = id;
     }
 
+    @Override
     public double eval(Environment env) throws EvalException {
         double in = 0;
         try {
@@ -26,6 +29,7 @@ public class NodeStmtRd extends NodeStmt {
         return env.put(id, in);
 	}
 
+    @Override
 	public String code() {
         return String.format(
             "printf(\"%s < \"); scanf(\"%%lf\", &%s); printf(\"\\n\");",

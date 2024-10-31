@@ -5,6 +5,7 @@
 
 public abstract class Node {
 
+	/* Block UI ASCII characters cuz fun */
 	public static final String UI_TOP_LEFT      = "┌";
 	public static final String UI_TOP_RIGHT     = "┐";
 	public static final String UI_BOTTOM_LEFT   = "└";
@@ -47,12 +48,23 @@ public abstract class Node {
 	 */
 	public String code() { return ""; }
 
+	/**
+	 * Construct a printable version of the parse tree.
+	 * 
+	 * @return Printable parse tree.
+	 */
 	public String tree() {
 		StringBuilder builder = new StringBuilder();
 		this.tree(builder, "");
 		return builder.toString();
 	}
 
+	/**
+	 * Builds a printable version of the parse tree.
+	 * 
+	 * @param builder String builder to store print contents.
+	 * @param indent Current indent of the level being printed.
+	 */
 	protected void tree(StringBuilder builder, String indent) {
 		Node[] children = this.children();
 		if (children.length == 0) {
@@ -81,6 +93,11 @@ public abstract class Node {
 		
 	}
 
+	/**
+	 * Get all parse tree children of this node.
+	 * 
+	 * @return Children of this node.
+	 */
 	protected abstract Node[] children();
 
 }

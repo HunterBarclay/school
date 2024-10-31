@@ -8,11 +8,13 @@ import java.io.*;
  */
 public class Code {
 
+	/* Initial C code */
 	private final String[] prologue = {
 			"#include <stdio.h>",
 			"int main() {",
 	};
 
+	/* Final C code */
 	private final String[] epilogue = {
 			"return 0;",
 			"}",

@@ -1,20 +1,43 @@
 import java.util.HashMap;
 
+/**
+ * Utility class for translating certain Grammar defined operators
+ * to their C counterparts.
+ */
 public class Translator {
 
-    private static HashMap<String, String> cTranslations;
+    // Direct lexeme translations
+    private HashMap<String, String> m_translations;
 
-    private Translator() { }
+    /**
+     * Singleton constructor. Adds translations.
+     */
+    private Translator() {
+        this.m_translations = new HashMap<String, String>();
+        this.m_translations.put("<>", "!=");
+    }
 
-    public static Token translate(Token t) {
-        ensureCTranslations();
-        String translation = cTranslations.get(t.lex());
+    /**
+     * Translates the lexeme of a token to the corresponding
+     * C lexeme.
+     * 
+     * @param t Token to translate.
+     * @return Token with same id, but translated lexeme, if one
+     *      exists. Otherwise, same lexeme.
+     */
+    public Token translate(Token t) {
+        String translation = this.m_translations.get(t.lex());
         return translation == null ? t : new Token(t.tok(), translation);
     }
 
-    public static String translate(String s) {
-        ensureCTranslations();
-        String translation = cTranslations.get(s);
+    /**
+     * Translate a lexeme to it's corresponding C lexeme.
+     * 
+     * @param s Target lexeme.
+     * @return C lexeme.
+     */
+    public String translate(String s) {
+        String translation = this.m_translations.get(s);
         if (translation == null) {
             Logger.debug("RELOP: No translation");
         } else {
@@ -23,11 +46,10 @@ public class Translator {
         return translation == null ? s : translation;
     }
 
-    private static void ensureCTranslations() {
-        if (Translator.cTranslations != null)
-            return;
-
-        cTranslations = new HashMap<String, String>();
-        cTranslations.put("<>", "!=");
+    private static Translator s_instance = null;
+    public static Translator getInstance() {
+        if (s_instance == null)
+            s_instance = new Translator();
+        return s_instance;
     }
 }

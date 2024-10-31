@@ -3,12 +3,21 @@ public class NodeStmtIf extends NodeStmt {
     NodeBoolExpr boolExpr;
     NodeStmt stmtTrue, stmtFalse;
 
+    /**
+     * Construct an if statement node.
+     * 
+     * @param boolExpr Boolean expression to determine path of
+     *      execution.
+     * @param stmtTrue Statement to execute when boolexpr is true.
+     * @param stmtFalse Statement to execute when boolexpr is false.
+     */
     public NodeStmtIf(NodeBoolExpr boolExpr, NodeStmt stmtTrue, NodeStmt stmtFalse) {
         this.boolExpr = boolExpr;
         this.stmtTrue = stmtTrue;
         this.stmtFalse = stmtFalse;
     }
 
+    @Override
     public double eval(Environment env) throws EvalException {
         if (this.boolExpr.eval(env) == 1) {
             return this.stmtTrue.eval(env);
@@ -18,6 +27,7 @@ public class NodeStmtIf extends NodeStmt {
         return Double.NaN;
 	}
 
+    @Override
 	public String code() {
         if (this.stmtFalse == null) {
             return String.format(

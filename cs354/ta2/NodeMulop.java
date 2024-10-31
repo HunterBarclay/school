@@ -34,6 +34,7 @@ public class NodeMulop extends Node {
 		throw new EvalException(pos,"bogus mulop: " + this.mulop);
 	}
 
+	@Override
 	public String code() { return String.format(" %s ", this.mulop); }
 
 	@Override

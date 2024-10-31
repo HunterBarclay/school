@@ -9,10 +9,12 @@ public class NodeFactNum extends NodeFact {
 		this.num=num;
 	}
 
+	@Override
 	public double eval(Environment env) throws EvalException {
 		return Double.parseDouble(this.num);
 	}
 
+	@Override
 	public String code() { return this.num.contains(".") ? this.num : this.num + ".0"; }
 
 	@Override

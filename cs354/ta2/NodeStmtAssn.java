@@ -9,10 +9,12 @@ public class NodeStmtAssn extends NodeStmt {
 		this.assn=assn;
 	}
 
+	@Override
 	public double eval(Environment env) throws EvalException {
 		return this.assn.eval(env);
 	}
 
+	@Override
 	public String code() { return this.assn.code() + ";"; }
 
 	@Override

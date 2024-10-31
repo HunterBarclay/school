@@ -53,6 +53,7 @@ public class Main {
 		Node parseTree;
 		try {
 			parseTree = parser.parse(program);
+			// Dumps tree to text file if env var is set.
 			dumpTree(parseTree);
 			parseTree.loadEnvironment(env);
 			parseTree.eval(env);
@@ -64,6 +65,13 @@ public class Main {
 		new Code(parseTree.code(), env);
 	}
 
+	/**
+	 * Dumps the parse tree of a node to a text file.
+	 * The text file is determined by the contents of
+	 * the 'Tree' environment variable.
+	 * 
+	 * @param parseTree Root node of the parse tree.
+	 */
 	public static void dumpTree(Node parseTree) {
 		String treeFile = System.getenv("Tree");
 		if (treeFile != null) {

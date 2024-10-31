@@ -9,10 +9,12 @@ public class NodeFactExpr extends NodeFact {
 		this.expr=expr;
 	}
 
+	@Override
 	public double eval(Environment env) throws EvalException {
 		return this.expr.eval(env);
 	}
 
+	@Override
 	public String code() { return "(" + this.expr.code() + ")"; }
 
 	@Override

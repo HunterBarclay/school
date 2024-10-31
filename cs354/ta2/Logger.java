@@ -3,6 +3,7 @@
  */
 public class Logger {
 
+    /* Disables all logging using this logger. */
     public static final boolean LOG_DISABLED = false;
 
     /**

@@ -6,7 +6,9 @@
  */
 
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Establish an environment of variables within a program.
@@ -16,6 +18,9 @@ public class Environment {
 	private java.util.Scanner m_scanner;
 	private Map<String, Double> m_double_map = new HashMap<String, Double>();
 
+	/**
+	 * Constructs the environment and initializes command-line scanner.
+	 */
 	public Environment() {
 		this.m_scanner = new java.util.Scanner(System.in);
 	}
@@ -71,7 +76,16 @@ public class Environment {
 		return builder.toString();
 	}
 
-	public double readDouble() {
+	/**
+	 * Reads a double from the command-line.
+	 * 
+	 * @return Double read from the command-line, upon success.
+	 * @throws InputMismatchException If the next token doesn't match
+	 * 		the Float regex or is out of range.
+	 * @throws NoSuchElementException If the input is exhausted.
+	 * @throws IllegalStateException If the scanner is closed.
+	 */
+	public double readDouble() throws InputMismatchException, NoSuchElementException, IllegalStateException {
 		return this.m_scanner.nextDouble();
 	}
 

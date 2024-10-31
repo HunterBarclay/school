@@ -1,8 +1,23 @@
+/**
+ * Boolean Expression node.
+ * 
+ * <pre>
+ * Grammar:
+ * boolexpr: expr relop expr
+ * <pre>
+ */
 public class NodeBoolExpr extends Node {
 
     public NodeExpr exprA, exprB;
     public NodeRelop relop;
 
+	/**
+	 * Construct new boolean expression.
+	 * 
+	 * @param exprA Left-hand expression.
+	 * @param relop Relation to check between the two expressions.
+	 * @param exprB Right-hand expression.
+	 */
     public NodeBoolExpr(NodeExpr exprA, NodeRelop relop, NodeExpr exprB) {
         this.exprA = exprA;
         this.relop = relop;

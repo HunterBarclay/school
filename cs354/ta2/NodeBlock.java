@@ -1,3 +1,12 @@
+/**
+ * Block node.
+ * 
+ * <pre>
+ * Grammar:
+ * block: stmt ';' block
+ *      | stmt
+ * <pre>
+ */
 public class NodeBlock extends Node {
 
     public NodeStmt stmt;
@@ -8,6 +17,12 @@ public class NodeBlock extends Node {
         this.block = block;
     }
 
+    /**
+     * Append a new block on to this block. Will bubble
+     * down to the end.
+     * 
+     * @param block New block to add.
+     */
     public void append(NodeBlock block) {
         if (this.block == null) {
             this.block = block;
@@ -41,6 +56,11 @@ public class NodeBlock extends Node {
         return builder.toString();
 	}
 
+    /**
+     * Constructs the statements C code.
+     * 
+     * @param builder String builder to store final C code.
+     */
 	private void buildStatements(StringBuilder builder) {
         builder.append(this.stmt.code());
         builder.append(" ");
