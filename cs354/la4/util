@@ -1,0 +1,27 @@
+#!/bin/bash
+[ -d bin ] || mkdir bin/
+[ -d bin/go ] || mkdir bin/go/
+[ -d bin/java ] || mkdir bin/java/
+
+if [ $1 == "go" ]; then
+    if [ $2 == "run" ]; then
+        go build -C go/main -o ../../bin/go/main main.go
+        go run -C go/main main.go
+    elif [ $2 == "test" ]; then
+        go build -o bin/go/test go/test/test.go
+        go run go/test/test.go
+    elif [ $2 == "build" ]; then
+        go build -C go/main -o ../../bin/go/main main.go
+    fi
+elif [ $1 == "java" ]; then
+    if [ $2 == "run" ]; then
+        javac -d bin/java/ java/*.java
+        java -cp bin/java/ Bank
+    elif [ $2 == "build" ]; then
+        javac -d bin/java/ java/*.java
+    fi
+elif [ $1 == "clean" ]; then
+    rm -rf bin/
+elif [ $1 == "test" ]; then
+    echo "todo"
+fi
