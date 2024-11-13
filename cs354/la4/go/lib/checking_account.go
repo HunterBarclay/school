@@ -1,5 +1,9 @@
 package lib
 
+/*
+Checkings account, no interest, so default the accrue function to give zero interest.
+*/
+
 type ICheckingAccount interface {
 	IAccount
 }

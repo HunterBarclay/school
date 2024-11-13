@@ -1,5 +1,9 @@
 package lib
 
+/*
+Account interfaces and structs, along with standard functionality for accounts.
+*/
+
 import "fmt"
 
 type IAccount interface {

@@ -1,5 +1,10 @@
 package main
 
+/*
+Main executable source file. Creates a customer with two types of accounts,
+accrues interest and prints out the bank details.
+*/
+
 import (
 	"bank/lib"
 	"fmt"

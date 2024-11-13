@@ -20,3 +20,15 @@ $ ./util go run
 ## Files
 - `README.md`: This file
 - `util`: Executable bash script for compiling and running the different projects.
+- `bin/`: Directory to store compiled files. Makes cleaning way easier.
+- `java/`: Directory for java project files.
+- `java/*.java`: Java source files provided by the professor.
+- `go/`: Directory for the go project files.
+- `go/go.mod`: Go module file for connecting the main executable file with the accompanying source files.
+- `go/main/`: Main go executable directory.
+- `go/main/main.go`: Go executable source.
+- `go/lib/`: Go library directory. Contains all the source utilized by the executable.
+- `go/lib/*.go`: Go library source files.
+
+## Cleanup
+You can delete the bin directory, or run `$ ./util clean`, which does the same thing.

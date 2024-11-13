@@ -1,5 +1,9 @@
 package lib
 
+/*
+Savings accounts that support interest accrual.
+*/
+
 type ISavingAccount interface {
 	IAccount
 }

@@ -1,5 +1,9 @@
 package lib
 
+/*
+Bank struct used for handling multiple accounts.
+*/
+
 import (
 	"fmt"
 	"strings"
@@ -30,7 +34,7 @@ func (b *Bank) Accrue(rate float64) {
 		go a.Accrue(c, rate)
 	}
 	for i := 0; i < len(b.accounts); i++ {
-		sum += <- c
+		sum += <-c
 	}
 	fmt.Printf("Total Accrual: $%.2f\n", sum)
 }

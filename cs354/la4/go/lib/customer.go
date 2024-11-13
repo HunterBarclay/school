@@ -1,5 +1,9 @@
 package lib
 
+/*
+Customer struct for storing name.
+*/
+
 type Customer struct {
 	name string
 }
