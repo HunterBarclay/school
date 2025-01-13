@@ -1,4 +1,7 @@
 # Language Assignment 4: Golang
+- Hunter Barclay
+- CS354: LA4
+- Nov. 13th, 2024
 
 ## Deliverables
 Using the util command, you can build and run both the go and java project. The go project
