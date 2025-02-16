@@ -1,4 +1,9 @@
-#if FALSE
+/**
+ * File: wrapper.c
+ * Author: Jim Buffenbarger
+ * 
+ * Override malloc and free to use buddy allocator.
+ */
 
 #include <string.h>
 
@@ -27,5 +32,3 @@ extern void *realloc(void *ptr, size_t size) {
   free(ptr);
   return new;
 }
-
-#endif

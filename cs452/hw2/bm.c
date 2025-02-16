@@ -4,10 +4,38 @@
 #include "bm.h"
 #include "utils.h"
 
+/**
+ * Get number of bits in bitmap.
+ * 
+ * Parameters:
+ * - BM b -> Bitmap object.
+ * 
+ * Returns:
+ * Number of bits in bitmap.
+ */
 static size_t bmbits(BM b) { size_t *bits=b; return *--bits; }
 
+/**
+ * Get number of bytes in bitmap.
+ * 
+ * Parameters:
+ * - BM b -> Bitmap object.
+ * 
+ * Returns:
+ * Number of bytes in bitmap.
+ */
 static size_t bmbytes(BM b) { return bits2bytes(bmbits(b)); }
 
+/**
+ * Determine if bit index is within bitmap bounds.
+ * 
+ * Parameter:
+ * - BM     b -> Bitmap object.
+ * - size_t i -> Bit index.
+ * 
+ * Errors:
+ * - Index out of bounds.
+ */
 static void ok(BM b, size_t i) {
   if (i<bmbits(b))
     return;

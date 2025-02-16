@@ -3,18 +3,8 @@
 #include "utils.h"
 
 /**
- * Example buddy allocator memory space throughout steps:
- *  0x000   0x100   0x200   0x300   0x400
- * *) |       |       |       |       |
- * 0) |~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~|
- * 1) |       A       |~~~~~~~~~~~~~~~| <- Allocate e=9 block
- * 2) |       A       |~~~~~~~|~~~~~~~| <- Allocate e=8 block
- * 3) |       A       |   B   |~~~~~~~|
- * 4) |~~~~~~~~~~~~~~~|   B   |~~~~~~~| <- Free A block
- * 5) |~~~~~~~~~~~~~~~|~~~~~~~|~~~~~~~| <- Free B block
- * 6) |~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~|
+ * Gets number of buddies tracked in the map.
  */
-
 static size_t mapsize(size_t size, int e) {
   size_t blocksize=e2size(e);
   size_t blocks=divup(size,blocksize);
@@ -23,17 +13,15 @@ static size_t mapsize(size_t size, int e) {
 }
 
 /**
- * Get index of buddy bitmap given block description.
+ * Get index of buddy bitmap given block address and degree.
  * 
- * Example:
- * Given the relative address of 0x200, and a block degree of 8,
- * It'll first find the first/earliest buddy by clearing that degrees
- * related bit in the relative address,
+ * Parameters:
+ * - void *base -> Base memory address of heap.
+ * - void *mem  -> Block address.
+ * - int   e    -> Degree of block.
  * 
- * 0x300 would point to the last/latest block in the second 8th degree buddy pairing,
- * 0x200 would point to the first/earlist block in the second 8th degree buddy pairing.
- * 
- * Next, we then find the bit index in the field by dividing our earliest buddy address by the size, then by two.
+ * Returns:
+ * Buddy pairing bitmap index.
  */
 static size_t bitaddr(void *base, void *mem, int e) {
   size_t addr=baddrclr(base,mem,e)-base;

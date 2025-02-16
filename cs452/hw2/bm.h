@@ -1,7 +1,12 @@
-// A general-purpose bitmap.
-
 #ifndef BM_H
 #define BM_H
+
+/**
+ * File: bm.h
+ * Author: Jim Buffenbarger
+ * 
+ * Generic, N-length bit map.
+ */
 
 #include <stdio.h>
 

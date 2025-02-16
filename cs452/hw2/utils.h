@@ -1,6 +1,14 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+/**
+ * File: utils.h
+ * Author: Jim Buffenbarger
+ * 
+ * Utility functions for the buddy allocator. Mostly
+ * bit map operations.
+ */
+
 #include <stdio.h>
 
 static const int bitsperbyte=8;

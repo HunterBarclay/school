@@ -1,6 +1,11 @@
 prog=buddy
 
-include ../GNUmakefile
+include ./ParentMakefile
 
-try: test.o libbuddy.so
-	gcc -o $@ $< -L. -lbuddy -Wl,-rpath=.
+try: hw1/deq.o hw1/main.o balloc.o bbm.o bm.o freelist.o utils.o wrapper.o
+	gcc -o $@ $^ $(ldflags)
+
+.PHONY: test-wrapper
+
+test-wrapper: try
+	./$<

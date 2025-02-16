@@ -1,11 +1,5 @@
 #ifndef ERROR_H
 #define ERROR_H
-/**
- * File: error.h
- * Author: Jim Buffenbarger
- * 
- * Useful logging functions for errors and warnings.
- */
 
 #include <stdio.h>
 #include <stdlib.h>

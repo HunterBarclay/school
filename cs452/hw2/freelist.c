@@ -1,17 +1,3 @@
-/**
- * File: freelist.c
- * Author: Hunter Barclay
- * 
- * This file includes the implementation of the buddy allocator's freelist.
- * Ngl this is like 90% of the allocator, just more strict on the parameters
- * and has minimal error handling.
- * 
- * For the degreelists, I had to do a bit of a funky adding because using
- * the square brackets also derefs it and it really needed to not be doing that.
- * I made it a double pointer but it was dereffing both of the pointers for some
- * reason? Idk.
- */
-
 #include "freelist.h"
 
 #include <stdlib.h>
@@ -252,7 +238,7 @@ extern FreeList freelistcreate(size_t size, int l, int u) {
     ERROR("Lower bound must be less than or equal to upper bound.");
   }
 
-  if (l < size2e(sizeof(struct t_FreeBlock))) {
+  if (l < freelistmindegree()) {
     ERROR("l is too small given implementation.");
   }
 
@@ -383,6 +369,10 @@ extern int freelistsize(FreeList f, void *base, void *mem, int l, int u) {
   }
 
   return e > u ? -1 : e;
+}
+
+extern int freelistmindegree() {
+  return size2e(sizeof(struct t_FreeBlock));
 }
 
 extern void freelistprint(FreeList f, void *base, int l, int u) {

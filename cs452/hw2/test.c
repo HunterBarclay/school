@@ -1,20 +1,57 @@
+/**
+ * File: test.c
+ * Author: Jim Buffenbarger
+ * 
+ * Testing file for the buddy allocator.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include "error.h"
 #include "utils.h"
 #include "bbm.h"
 #include "freelist.h"
+#include "balloc.h"
 
-#define ASSERT(x) do {                                     \
-  if (!(x)) {                                              \
-    fprintf(stderr, "[FAIL] %s:%d\n", __FILE__, __LINE__); \
-    fflush(stderr);                                        \
-    exit(1);                                               \
-  }                                                        \
-} while (0)                                                \
+/**
+ * Exit upon statement being false.
+ */
+#define ASSERT(x) do {                                          \
+  if (!(x)) {                                                   \
+    fprintf(stderr, "[ASSERTION] %s:%d\n", __FILE__, __LINE__); \
+    fflush(stderr);                                             \
+    exit(1);                                                    \
+  }                                                             \
+} while (0)                                                     \
 
 static unsigned char HEAP_2048[2048];
+
+static int passed = 0;
+static int failed = 0;
+
+void run_test(const char *name, void(*func)(void)) {
+  int pid = fork();
+  if (pid != 0) {
+    // parent process
+    int stat;
+    waitpid(pid, &stat, 0);
+    int normalAdnormal = WIFEXITED(stat);
+    int exitCode = WEXITSTATUS(stat);
+    if (normalAdnormal != 0 && exitCode == 0) {
+      ++passed;
+      printf("\033[92;1m[PASS]\033[0m %s\n", name);
+    } else {
+      ++failed;
+      printf("\033[91;1m[FAIL]\033[0m (%d) %s\n", exitCode, name);
+    }
+  } else {
+    func();
+    exit(0);
+  }
+}
 
 /**
  * "utils" Unit Tests.
@@ -31,8 +68,6 @@ static void test_utils_mmalloc_mmfree(void) {
   }
 
   mmfree(ptr, size);
-
-  printf("[PASS] utils - mmalloc\n");
 }
 
 static void test_utils_bits2bytes(void) {
@@ -49,8 +84,6 @@ static void test_utils_bits2bytes(void) {
   ASSERT(bits2bytes(10) == 2);
   ASSERT(bits2bytes(16) == 2);
   ASSERT(bits2bytes(17) == 3);
-
-  printf("[PASS] utils - bits2bytes\n");
 }
 
 static void test_utils_e2size(void) {
@@ -61,8 +94,6 @@ static void test_utils_e2size(void) {
     ASSERT(e2size(e) == a);
     a *= 2;
   }
-
-  printf("[PASS] utils - e2size\n");
 }
 
 static void test_utils_size2e(void) {
@@ -77,8 +108,6 @@ static void test_utils_size2e(void) {
     upper *= 2;
     ++e;
   }
-
-  printf("[PASS] utils - size2e\n");
 }
 
 static void test_utils_bitset(void) {
@@ -91,8 +120,6 @@ static void test_utils_bitset(void) {
   ASSERT(a == 0b10111111);
   bitset(&a, 6);
   ASSERT(a == 0b11111111);
-
-  printf("[PASS] utils - bitset\n");
 }
 
 static void test_utils_bitclr(void) {
@@ -105,8 +132,6 @@ static void test_utils_bitclr(void) {
   ASSERT(a == 0b00010000);
   bitclr(&a, 4);
   ASSERT(a == 0b00000000);
-
-  printf("[PASS] utils - bitclr\n");
 }
 
 static void test_utils_bitinv(void) {
@@ -119,8 +144,6 @@ static void test_utils_bitinv(void) {
   ASSERT(a == 0b01000101);
   bitinv(&a, 4);
   ASSERT(a == 0b01010101);
-
-  printf("[PASS] utils - bitinv\n");
 }
 
 static void test_utils_bittst(void) {
@@ -129,9 +152,11 @@ static void test_utils_bittst(void) {
   ASSERT(bittst(&a, 5));
   ASSERT(bittst(&a, 4));
   ASSERT(!bittst(&a, 3));
-
-  printf("[PASS] utils - bittst\n");
 }
+
+/**
+ * "freelist" Unit Tests.
+ */
 
 static void test_fl_create_delete(void) {
   int u = 10;
@@ -139,8 +164,6 @@ static void test_fl_create_delete(void) {
 
   FreeList fl = freelistcreate(sizeof(HEAP_2048), l, u);
   freelistdelete(fl, l, u);
-
-  printf("[PASS] fl - create & delete\n");
 }
 
 static void test_fl_alloc_free(void) {
@@ -202,7 +225,6 @@ static void test_fl_alloc_free(void) {
   ASSERT(e - (void *)HEAP_2048 == 0x0000);
 
   freelistdelete(fl, l, u);
-  printf("[PASS] fl - alloc & free\n");
 }
 
 static void test_fl_size(void) {
@@ -231,52 +253,123 @@ static void test_fl_size(void) {
   ASSERT(freelistsize(fl, HEAP_2048, h, l, u) == 10);
 
   freelistdelete(fl, l, u);
-  printf("[PASS] fl - free\n");
 }
 
 /**
- * "utils" Unit Tests.
+ * "balloc" Unit Tests.
+ */
+
+static void test_balloc_create_delete(void) {
+  Balloc b = bcreate(2048, 4, 8);
+  bprint(b);
+  bdelete(b);
+}
+
+static void test_balloc_alloc_free_size(void) {
+  Balloc b = bcreate(512, 3, 4);
+  int *a = (int *) balloc(b, sizeof(int));
+  ASSERT(a != NULL);
+  *a = 30;
+  ASSERT(bsize(b, a) == 3);
+
+  bfree(b, a);
+  bdelete(b);
+}
+
+static void test_balloc_overlap(void) {
+  Balloc ba = bcreate(256, 3, 8);
+  
+  int i = 0;
+  char *a = balloc(ba, 32);
+  for (i = 0; i < 32; ++i) {
+    a[i] = 'a';
+  }
+  char *b = balloc(ba, 32);
+  for (i = 0; i < 32; ++i) {
+    b[i] = 'b';
+  }
+  char *c = balloc(ba, 64);
+  for (i = 0; i < 64; ++i) {
+    c[i] = 'c';
+  }
+  char *d = balloc(ba, 128);
+  for (i = 0; i < 128; ++i) {
+    d[i] = 'd';
+  }
+
+  for (i = 0; i < 32; ++i) {
+    ASSERT(a[i] == 'a');
+  }
+  for (i = 0; i < 32; ++i) {
+    ASSERT(b[i] == 'b');
+  }
+  for (i = 0; i < 64; ++i) {
+    ASSERT(c[i] == 'c');
+  }
+  for (i = 0; i < 128; ++i) {
+    ASSERT(d[i] == 'd');
+  }
+
+  bfree(ba, a);
+  bfree(ba, b);
+  bfree(ba, c);
+  bfree(ba, d);
+  bdelete(ba);
+}
+
+/**
+ * Module Unit Tests
  */
 
 static void test_module_utils(void) {
   printf("\n=== Testing Module \"utils\":\n");
+  reset_leak_report();
 
-  test_utils_mmalloc_mmfree();
-  test_utils_bits2bytes();
-  test_utils_e2size();
-  test_utils_size2e();
-  test_utils_bitset();
-  test_utils_bitclr();
-  test_utils_bitinv();
-  test_utils_bittst();
+  run_test("utils - mmalloc & mmfree", &test_utils_mmalloc_mmfree);
+  run_test("utils - bits2bytes", &test_utils_bits2bytes);
+  run_test("utils - e2size", &test_utils_e2size);
+  run_test("utils - size2e", &test_utils_size2e);
+  run_test("utils - bitset", &test_utils_bitset);
+  run_test("utils - bitclr", &test_utils_bitclr);
+  run_test("utils - bitinv", &test_utils_bitinv);
+  run_test("utils - bittst", &test_utils_bittst);
 
   test_leak_report();
 }
 
-/**
- * "freelist" Unit Tests.
- */
 static void test_module_freelist(void) {
   printf("\n=== Testing Module \"freelist\":\n");
+  reset_leak_report();
 
-  test_fl_create_delete();
-  test_fl_alloc_free();
-  test_fl_size();
+  run_test("freelist - create & delete", &test_fl_create_delete);
+  run_test("freelist - alloc & free", &test_fl_alloc_free);
+  run_test("freelist - size", &test_fl_size);
+
+  test_leak_report();
+}
+
+static void test_module_balloc(void) {
+  printf("\n=== Testing Module \"balloc\":\n");
+  reset_leak_report();
+
+  run_test("balloc - create & delete", &test_balloc_create_delete);
+  run_test("balloc - alloc & free", &test_balloc_alloc_free_size);
+  run_test("balloc - overlap", &test_balloc_overlap);
 
   test_leak_report();
 }
 
 int main(int argc, const char **argv) {
-
-  // BBM bbm = bbmcreate(1024, 8);
-  // bbmdelete(bbm);
-
-  // FreeList l = freelistcreate(1024, 8, 10);
-  // freelistdelete(l, 8, 10);
-
   test_module_utils();
   test_module_freelist();
+  test_module_balloc();
+#if DEQ_TEST
+  test_module_deq();
+#endif
 
-  printf("All Modules Passed\n");
+  printf("Test Results:\n");
+  printf("\033[92;1mPassed\033[0m\t%d\n", passed);
+  printf("\033[91;1mFailed\033[0m\t%d\n", failed);
+
   exit(0);
 }

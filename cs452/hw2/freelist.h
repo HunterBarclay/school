@@ -1,6 +1,12 @@
 #ifndef FREELIST_H
 #define FREELIST_H
 
+/**
+ * FreeList handles where unallocated and allocated blocks of memory
+ * are in the memory bool for the buddy allocator. It handles splitting,
+ * merging, allocating, and freeing blocks in the pool.
+ */
+
 #include <stdio.h>
 
 typedef void *FreeList;
@@ -37,6 +43,7 @@ typedef void *FreeList;
  * - Failed to allocate space for freelist memory.
  */
 extern FreeList freelistcreate(size_t size, int l, int u);
+
 /**
  * Delete the freelist.
  * 
@@ -69,6 +76,7 @@ extern void     freelistdelete(FreeList f, int l, int u);
  * - Requested degree is too large.
  */
 extern void *freelistalloc(FreeList f, void *base, int e, int l);
+
 /**
  * Free a block to be reused.
  * 
@@ -99,6 +107,15 @@ extern void  freelistfree(FreeList f, void *base, void *mem, int e, int l);
  * Degree of the allocated block.
  */
 extern int freelistsize(FreeList f, void *base, void *mem, int l, int u);
+
+/**
+ * Get the minimum degree of block that can be stored in the freelist.
+ * 
+ * Returns:
+ * Minimum block degree.
+ */
+extern int freelistmindegree();
+
 /**
  * Prints debugging information about the freelist.
  * 
