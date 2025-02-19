@@ -1,0 +1,5 @@
+pwd
+echo hi
+exit
+pwd
+exit
