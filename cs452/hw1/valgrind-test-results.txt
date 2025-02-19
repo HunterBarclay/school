@@ -1,0 +1,19 @@
+valgrind --leak-check=full --show-leak-kinds=all ./deq 
+!!! Warning expected !!!
+
+
+!!! Warning should have displayed !!!
+Put Passed
+Ith Passed
+  Get (head) Passed
+  Get (tail) Passed
+Get Passed
+  Rem (a) Passed
+  Rem (b) Passed
+  Rem (c) Passed
+  Rem (fail) Passed
+Rem Passed
+All Tests Passed
+
+Elements of list (space delimiter):
+[ Hello World ! ]
