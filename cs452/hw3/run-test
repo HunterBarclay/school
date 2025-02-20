@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Regression tester. Basically the regression tester from
+# cs354 translation assignment.
+
+let passed=0
+let failed=0
+
+# Gen some expected test results
+pwd > tests/test-pwd/exp1
+
+# Get the program number, given file path
+PrgNum() {
+    echo $(echo $1 | sed -e 's/[^0-9]*\([0-9]\+\)*$/\1/')
+}
+
+# Quote test?
+Quote() {
+    sed 's/"/\\\"/g'
+}
+
+# Get list of programs provided in test
+Prgs() {
+    local p
+    for p ; do
+	echo -n "\"$(Quote <$p)\" "
+    done
+}
+
+# Name for test: ${1##*/} or ${t##*/}
+Compare() {
+    if eval diff -q -w $1/exp$2 $1/out$2 2>$1/diff$2 ; then
+        printf "\033[92;1m\t[ program $2 passed ]\033[0m\n"
+        passed=$((passed+1))
+        return 1
+    else
+        printf "\033[91;1m\t[ program $2 failed ]\033[0m\n" >&2
+        failed=$((failed+1))
+    fi
+}
+
+# Iterate through each test directory
+for t in tests/test-* ; do
+    
+    if [ -n "$1" ]; then
+        if ! [[ "$t" =~ $1 ]]; then
+            continue
+        fi
+    fi
+
+    printf "\033[1m[ %s ]\033[0m\n" ${t##*/}
+    
+    # Scanner Test
+    for p in $t/inp* ; do
+        prgnum=$(PrgNum $p)
+        eval shell < $p > $t/out$prgnum 2> $t/errs$prgnum
+        Compare $t $prgnum
+        for tmp in tmp* ; do
+            rm -f $tmp
+        done
+    done
+done
+
+# Print overall results of the testing
+printf "\n"
+printf "\t\033[92;1mpassed\033[0m\t%d\n" $passed
+printf "\t\033[91;1mfailed\033[0m\t%d\n" $failed
+
+printf "\n"
+printf "\t\033[1mpass-rate\t%3.2d%%\033[0m\n" $((100 * passed / (passed + failed)))
+printf "\n"
+

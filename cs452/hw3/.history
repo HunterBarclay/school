@@ -3,3 +3,13 @@ echo hi
 exit
 pwd
 exit
+pwd
+ls
+clear
+exit
+ls
+clear
+exit
+clear
+ls ; pwd ; ls -la
+exit

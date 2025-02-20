@@ -19,6 +19,7 @@ static int   eat(char *s) { return eatScanner(scan,s); }
 
 static T_word p_word();
 static T_words p_words();
+static T_redir p_redir();
 static T_command p_command();
 static T_pipeline p_pipeline();
 static T_sequence p_sequence();
@@ -39,19 +40,32 @@ static T_words p_words() {
     return 0;
   T_words words=new_words();
   words->word=word;
-  if (cmp("|") || cmp("&") || cmp(";"))
+  if (cmp("|") || cmp("&") || cmp(";") || cmp("<") || cmp(">"))
     return words;
   words->words=p_words();
   return words;
 }
 
+static T_redir p_redir() {
+  T_redir redir = new_redir();
+  if (eat("<")) {
+    redir->in_word = p_word();
+  }
+  if (eat(">")) {
+    redir->out_word = p_word();
+  }
+  return redir;
+}
+
 static T_command p_command() {
-  T_words words=0;
-  words=p_words();
+  T_words words = 0;
+  words = p_words();
   if (!words)
     return 0;
-  T_command command=new_command();
-  command->words=words;
+  T_command command = new_command();
+  command->words = words;
+  command->redir = p_redir();
+
   return command;
 }
 

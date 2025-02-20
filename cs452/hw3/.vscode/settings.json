@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "error.h": "c"
-    }
+        "utils.h": "c",
+        "balloc.h": "c",
+        "mman-linux.h": "c",
+        "mman.h": "c",
+        "stdlib.h": "c",
+        "freelist.h": "c"
+    },
+    "C_Cpp.default.compilerPath": "/usr/local/apps/local/bin/clang"
 }

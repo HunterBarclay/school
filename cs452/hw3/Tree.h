@@ -4,6 +4,7 @@
 typedef struct T_sequence *T_sequence;
 typedef struct T_pipeline *T_pipeline;
 typedef struct T_command  *T_command;
+typedef struct T_redir    *T_redir;
 typedef struct T_words    *T_words;
 typedef struct T_word     *T_word;
 
@@ -20,6 +21,12 @@ struct T_pipeline {
 
 struct T_command {
   T_words words;
+  T_redir redir;
+};
+
+struct T_redir {
+  T_word in_word;  // Word specifying input file.
+  T_word out_word; // Word specifying output file.
 };
 
 struct T_words {
@@ -34,6 +41,7 @@ struct T_word {
 extern T_sequence new_sequence();
 extern T_pipeline new_pipeline();
 extern T_command  new_command();
+extern T_redir    new_redir();
 extern T_words    new_words();
 extern T_word     new_word();
 

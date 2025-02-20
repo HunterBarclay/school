@@ -13,9 +13,9 @@ all: deq $(prog) ;
 
 # Runs the deq makefile
 deq:
-	@printf "\033[2;3mBuilding Deq...\033[0m\n"
+	@printf "\033[2;3mBuilding deq...\033[0m\n"
 	$(MAKE) -C deq
-	@printf "\033[92;1mDeq Built\033[0m\n"
+	@printf "\033[92;1mdeq Built\033[0m\n"
 
 .SUFFIXES:
 
@@ -26,7 +26,7 @@ deq:
 %.i: %.cc ; g++ -o $@ -E $< $(defines)
 %.s: %.cc ; g++ -o $@ -S $< $(defines)
 
-$(prog): $(objs) libdeq.so
+$(prog): deq $(objs) libdeq.so
 	@printf "\033[2;3mBuilding %s...\033[0m\n" $@
 	$(ld) -o $@ $(objs) $(ldflags) -Wl,-rpath=.
 	@printf "\033[92;1m%s Built\033[0m\n" $@
@@ -41,10 +41,13 @@ trytest: try
 	Test/run
 
 test: $(prog)
-	Test/run
+	run-test
 
 clean:
 	rm -f $(prog) libdeq.so try trytest test *.o *.d *.i
+	rm -f tests/test-*/out*
+	rm -f tests/test-*/diff*
+	rm -f tests/test-*/errs*
 	$(MAKE) -C deq clean
 
 valgrind: $(prog) ; vg

@@ -11,6 +11,16 @@
 #include "Interpreter.h"
 #include "error.h"
 
+/**
+ * Tasks:
+ * [x] - Foreground Commands
+ * [?] - Sequence of Commands
+ * [x] - I/O Redirection
+ * [ ] - Background Commands
+ * [ ] - Pipelines
+ * [ ] - Remaining Builtin Commands
+ */
+
 int main() {
   int eof=0;
   Jobs jobs=newJobs();
