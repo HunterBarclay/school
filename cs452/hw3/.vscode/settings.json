@@ -5,7 +5,9 @@
         "mman-linux.h": "c",
         "mman.h": "c",
         "stdlib.h": "c",
-        "freelist.h": "c"
+        "freelist.h": "c",
+        "readline.h": "c"
     },
-    "C_Cpp.default.compilerPath": "/usr/local/apps/local/bin/clang"
+    "C_Cpp.default.compilerPath": "/usr/local/apps/local/bin/clang",
+    "C_Cpp.default.compilerArgs": [ "-D_USE_GNU" ]
 }

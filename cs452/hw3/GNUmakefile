@@ -34,17 +34,11 @@ $(prog): deq $(objs) libdeq.so
 libdeq.so: deq/libdeq.so
 	cp $^ ./
 
-try: $(objs) libdeq.so
-	gcc -o $@ $(objs) $(ldflags) -Wl,-rpath=.
-
-trytest: try
-	Test/run
-
 test: $(prog)
-	run-test
+	run-tests
 
 clean:
-	rm -f $(prog) libdeq.so try trytest test *.o *.d *.i
+	rm -f $(prog) libdeq.so test *.o *.d *.i
 	rm -f tests/test-*/out*
 	rm -f tests/test-*/diff*
 	rm -f tests/test-*/errs*

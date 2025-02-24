@@ -29,7 +29,7 @@ Prgs() {
 
 # Name for test: ${1##*/} or ${t##*/}
 Compare() {
-    if eval diff -q -w $1/exp$2 $1/out$2 2>$1/diff$2 ; then
+    if eval diff -q -w $1/exp$2 $1/out$2 2>&1 >$1/diff$2 ; then
         printf "\033[92;1m\t[ program $2 passed ]\033[0m\n"
         passed=$((passed+1))
         return 1

@@ -11,6 +11,8 @@ extern Command newCommand(T_command command);
 
 extern void execCommand(Command command, Pipeline pipeline, Jobs jobs,
 			int *jobbed, int *eof, int fg);
+extern void pipeCommand(Command prev, Command next);
+extern void waitCommand(Command command);
 
 extern void freeCommand(Command command);
 extern void freestateCommand();

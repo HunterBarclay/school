@@ -3,9 +3,9 @@
 #include <unistd.h>
 #include <signal.h>
 #include <termios.h>
+#include <time.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
 #include "Jobs.h"
 #include "Parser.h"
 #include "Interpreter.h"
@@ -25,6 +25,7 @@ int main() {
   int eof=0;
   Jobs jobs=newJobs();
   char *prompt=0;
+  srand(time(NULL));
 
   if (isatty(fileno(stdin))) {
     using_history();

@@ -18,5 +18,6 @@ extern void freeSequence(Sequence sequence) {
 extern void execSequence(Sequence sequence, Jobs jobs, int *eof) {
   while (deq_len(sequence) && !*eof)
     execPipeline(deq_head_get(sequence),jobs,eof);
-  freeSequence(sequence);
+
+  freeSequence(sequence); // Only frees pipelines that are left over after exit.
 }

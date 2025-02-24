@@ -24,6 +24,14 @@ extern Pipeline newPipeline(int fg) {
 
 extern void addPipeline(Pipeline pipeline, Command command) {
   PipelineRep r=(PipelineRep)pipeline;
+
+  // Get tail command. If tail has no out file, create a pipe between
+  // current tail and next command
+  if (deq_len(r->processes) != 0) {
+    Command prev = (Command) deq_tail_ith(r->processes, 0);
+    pipeCommand(prev, command);
+  }
+
   deq_tail_put(r->processes,command);
 }
 
@@ -35,7 +43,7 @@ extern int sizePipeline(Pipeline pipeline) {
 static void execute(Pipeline pipeline, Jobs jobs, int *jobbed, int *eof) {
   PipelineRep r=(PipelineRep)pipeline;
   for (int i=0; i<sizePipeline(r) && !*eof; i++)
-    execCommand(deq_head_ith(r->processes,i),pipeline,jobs,jobbed,eof,1);
+    execCommand(deq_head_ith(r->processes,i),pipeline,jobs,jobbed,eof,r->fg);
 }
 
 extern void execPipeline(Pipeline pipeline, Jobs jobs, int *eof) {
@@ -47,6 +55,11 @@ extern void execPipeline(Pipeline pipeline, Jobs jobs, int *eof) {
 
 extern void freePipeline(Pipeline pipeline) {
   PipelineRep r=(PipelineRep)pipeline;
+  
+  while (deq_len(r->processes) != 0) {
+    waitCommand(deq_head_get(r->processes));
+  }
+
   deq_del(r->processes,freeCommand);
   free(r);
 }

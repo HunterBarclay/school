@@ -13,3 +13,20 @@ exit
 clear
 ls ; pwd ; ls -la
 exit
+ls &
+clear
+ls &
+ls
+clear
+exit
+clear
+ls
+clear
+ls &
+clear
+ls & echo Hi & echo Hello
+ls & echo Hi & echo Hello
+ls & echo Hi & echo Hello
+ls & echo Hi & echo Hello
+clear
+exit

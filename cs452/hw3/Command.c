@@ -4,6 +4,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
 
 #include "Command.h"
 #include "error.h"
@@ -13,12 +16,14 @@ typedef struct {
   char **argv;
   char *in_file;
   char *out_file;
+  int is_out_pipe;
+  int pid;
 } * CommandRep;
 
 #define BIARGS CommandRep r, int *eof, Jobs jobs
 #define BINAME(name) bi_##name
 #define BIDEFN(name) static void BINAME(name)(BIARGS)
-#define BIENTRY(name)                                                          \
+#define BIENTRY(name)     \
   { #name, BINAME(name) }
 
 static char *owd = 0;
@@ -114,12 +119,19 @@ extern Command newCommand(T_command command) {
     r->out_file = command->redir->out_word->s;
   else
     r->out_file = NULL;
+
+  r->is_out_pipe = 0;
+  r->pid = 0;
   return r;
 }
 
 static void child(CommandRep r, int fg) {
   int eof = 0;
   Jobs jobs = newJobs();
+
+  if (!r->in_file && fg) {
+    r->in_file = strdup("/dev/null");
+  }
 
   if (r->in_file) {
     int in_fd = open(r->in_file, O_RDONLY);
@@ -132,7 +144,12 @@ static void child(CommandRep r, int fg) {
   }
 
   if (r->out_file) {
-    int out_fd = open(r->out_file, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+    int out_fd = -1;
+    if (r->is_out_pipe) {
+      out_fd = open(r->out_file, O_WRONLY);
+    } else {
+      out_fd = open(r->out_file, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+    }
     if (out_fd == -1) {
       ERROR("Failed to open output file.");
     }
@@ -170,12 +187,39 @@ extern void execCommand(Command command, Pipeline pipeline, Jobs jobs,
   if (pid == 0)
     child(r, fg); // Will not return
 
-  if (fg)
-    waitOnChild(pid);
+  r->pid = pid;
+}
+
+extern void pipeCommand(Command prev, Command next) {
+  CommandRep r_prev = prev;
+  CommandRep r_next = next;
+
+  if (!r_prev->out_file && !r_next->in_file) {
+    char *fifo;
+    asprintf(&fifo, "viekcodd8395-%d", rand());
+    if (mkfifo(fifo, S_IRWXU) == -1) {
+      if (errno != EEXIST) {
+        ERROR("Failed to create pipeline.");
+      }
+    }
+
+    r_prev->out_file = strdup(fifo);
+    r_next->in_file = strdup(fifo);
+    free(fifo);
+  }
+}
+
+extern void waitCommand(Command command) {
+  CommandRep r = command;
+  if (r->pid != 0) {
+    waitOnChild(r->pid);
+    r->pid = 0;
+  }
 }
 
 extern void freeCommand(Command command) {
   CommandRep r = command;
+  waitCommand(command);
   char **argv = r->argv;
   while (*argv)
     free(*argv++);
