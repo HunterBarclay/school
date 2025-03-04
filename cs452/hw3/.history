@@ -1,32 +1,17 @@
-pwd
-echo hi
+echo hello & cd .. & pwd
 exit
-pwd
+echo hello & cd .. & pwd
 exit
-pwd
-ls
-clear
+ls & echo hi
 exit
-ls
-clear
 exit
-clear
-ls ; pwd ; ls -la
+echo a & echo b & echo c
+echo a & pwd & echo c
+pwd &
 exit
-ls &
-clear
-ls &
-ls
-clear
+pwd &
 exit
-clear
-ls
-clear
-ls &
-clear
-ls & echo Hi & echo Hello
-ls & echo Hi & echo Hello
-ls & echo Hi & echo Hello
-ls & echo Hi & echo Hello
-clear
+echo Hi & sleep 1 ; echo Hello
+exit
+echo Hi & sleep 1 ; echo Hello
 exit

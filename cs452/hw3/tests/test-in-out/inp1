@@ -1,3 +1,4 @@
-echo hello > tmp1
-wc -l < tmp1 > tmp2
-cat tmp2
+echo hello > /tmp/shell-test-dir/tmp1
+cat /tmp/shell-test-dir/tmp1
+wc -l < /tmp/shell-test-dir/tmp1 > /tmp/shell-test-dir/tmp2
+cat /tmp/shell-test-dir/tmp2

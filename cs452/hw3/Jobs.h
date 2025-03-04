@@ -7,6 +7,7 @@ typedef void *Jobs;
 
 extern Jobs newJobs();
 extern void addJobs(Jobs jobs, Pipeline pipeline);
+extern void waitOnJobs(Jobs jobs);
 extern int sizeJobs(Jobs jobs);
 extern void freeJobs(Jobs jobs);
 

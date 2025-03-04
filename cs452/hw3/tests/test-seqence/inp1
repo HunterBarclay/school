@@ -1,1 +1,1 @@
-echo Hi & wait 1 ; echo Hello
+echo Hi & sleep 1 ; echo Hello

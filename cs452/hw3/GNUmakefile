@@ -9,7 +9,7 @@ ld?=gcc
 .PHONY: clean valgrind deq all
 
 # Requires deq be addressed first, before evaluating the rest of the dependencies
-all: deq $(prog) ;
+all: $(prog) ;
 
 # Runs the deq makefile
 deq:

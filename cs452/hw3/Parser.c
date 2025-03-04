@@ -108,6 +108,7 @@ extern Tree parseTree(char *s) {
 
 static void f_word(T_word t);
 static void f_words(T_words t);
+static void f_redir(T_redir t);
 static void f_command(T_command t);
 static void f_pipeline(T_pipeline t);
 static void f_sequence(T_sequence t);
@@ -128,9 +129,18 @@ static void f_words(T_words t) {
   free(t);
 }
 
+static void f_redir(T_redir t) {
+  if (!t)
+    return;
+  f_word(t->in_word);
+  f_word(t->out_word);
+  free(t);
+}
+
 static void f_command(T_command t) {
   if (!t)
     return;
+  f_redir(t->redir);
   f_words(t->words);
   free(t);
 }

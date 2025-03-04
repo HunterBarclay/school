@@ -1,0 +1,2 @@
+echo BobbyDean > /tmp/shell-test-dir/in2
+cat /tmp/shell-test-dir/in2

@@ -14,11 +14,11 @@
 /**
  * Tasks:
  * [x] - Foreground Commands
- * [?] - Sequence of Commands
+ * [x] - Sequence of Commands
  * [x] - I/O Redirection
- * [ ] - Background Commands
- * [ ] - Pipelines
- * [ ] - Remaining Builtin Commands
+ * [?] - Background Commands
+ * [x] - Pipelines
+ * [x] - Remaining Builtin Commands
  */
 
 int main() {
@@ -47,6 +47,8 @@ int main() {
     interpretTree(tree,&eof,jobs);
     freeTree(tree);
   }
+
+  freeJobs(jobs);
 
   if (isatty(fileno(stdin))) {
     write_history(".history");

@@ -1,2 +1,2 @@
-echo HelloWorld > tmp
-wc -l < tmp
+echo HelloWorld > /tmp/shell-test-dir/in1
+wc -l < /tmp/shell-test-dir/in1

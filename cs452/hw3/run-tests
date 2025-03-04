@@ -9,6 +9,18 @@ let failed=0
 # Gen some expected test results
 pwd > tests/test-pwd/exp1
 
+# Make tmp directory for easy cd tests
+ResetTmpDir() {
+    [ -d /tmp/shell-test-dir ] && rm -rf /tmp/shell-test-dir
+    mkdir /tmp/shell-test-dir
+    mkdir /tmp/shell-test-dir/dir-a
+    mkdir /tmp/shell-test-dir/dir-b
+    mkdir /tmp/shell-test-dir/dir-b/dir-a
+    mkdir /tmp/shell-test-dir/dir-c
+    mkdir /tmp/shell-test-dir/dir-c/dir-a
+    mkdir /tmp/shell-test-dir/dir-c/dir-b
+}
+
 # Get the program number, given file path
 PrgNum() {
     echo $(echo $1 | sed -e 's/[^0-9]*\([0-9]\+\)*$/\1/')
@@ -53,7 +65,8 @@ for t in tests/test-* ; do
     # Scanner Test
     for p in $t/inp* ; do
         prgnum=$(PrgNum $p)
-        eval shell < $p > $t/out$prgnum 2> $t/errs$prgnum
+        ResetTmpDir
+		eval shell < $p > $t/out$prgnum 2> $t/errs$prgnum
         Compare $t $prgnum
         for tmp in tmp* ; do
             rm -f $tmp

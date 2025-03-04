@@ -1,2 +1,2 @@
-echo Test > tmp
-cat tmp
+echo Test > /tmp/shell-test-dir/tmp
+cat /tmp/shell-test-dir/tmp

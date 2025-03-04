@@ -1,0 +1,8 @@
+cd /tmp/shell-test-dir
+pwd
+cd dir-a
+pwd
+cd ..
+pwd
+cd -
+pwd
