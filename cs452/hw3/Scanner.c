@@ -5,6 +5,7 @@
 #include "Scanner.h"
 #include "error.h"
 
+/* Internal Scanner Representation */
 typedef struct {
   int eos;
   char *str;
@@ -31,17 +32,25 @@ extern void freeScanner(Scanner scan) {
   free(r);
 }
 
+/**
+ * Scan p through all matching characters in q.
+ */
 static char *thru(char *p, char *q) {
   for (; *p && strchr(q,*p); p++);
   return p;
 }
 
+/**
+ * Scan p until characters matching in q are found.
+ */
 static char *upto(char *p, char *q) {
   for (; *p && !strchr(q,*p); p++);
   return p;
 }
 
+/* Scan through whitespace */
 static char *wsthru(char *p) { return thru(p," \t"); }
+/* Scan until whitespace */
 static char *wsupto(char *p) { return upto(p," \t"); }
 
 extern char *nextScanner(Scanner scan) {

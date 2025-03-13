@@ -7,8 +7,19 @@
 #include "Pipeline.h"
 #include "Command.h"
 
+/**
+ * Interpret a command from the AST.
+ */
 static Command i_command(T_command t);
+
+/**
+ * Interpret a pipeline from the AST.
+ */
 static void i_pipeline(T_pipeline t, Pipeline pipeline);
+
+/**
+ * Interpret a sequence from the AST.
+ */
 static void i_sequence(T_sequence t, Sequence sequence);
 
 static Command i_command(T_command t) {

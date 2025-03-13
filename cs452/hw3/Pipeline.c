@@ -9,6 +9,7 @@
 #include "error.h"
 #include "Utils.h"
 
+/* Internal Pipeline structure */
 typedef struct {
   Deq processes;
   int fg; // not "&"
@@ -43,6 +44,9 @@ extern int sizePipeline(Pipeline pipeline) {
   return deq_len(r->processes);
 }
 
+/**
+ * Execute a pipeline. Executes each command one by one.
+ */
 static void execute(Pipeline pipeline, Jobs jobs, int *jobbed, int *eof) {
   PipelineRep r = (PipelineRep)pipeline;
   for (int i = 0; i < sizePipeline(r) && !*eof; i++)

@@ -7,21 +7,33 @@
 #include "Scanner.h"
 #include "error.h"
 
+/* Scanner to use */
 static Scanner scan;
 
+/* Custom error */
 #undef ERROR
 #define ERROR(s) ERRORLOC(__FILE__,__LINE__,"error","%s (pos: %d)",s,posScanner(scan))
 
+/* Get next token */
 static char *next()       { return nextScanner(scan); }
+/* Get current token */
 static char *curr()       { return currScanner(scan); }
+/* Compare current token with string */
 static int   cmp(char *s) { return cmpScanner(scan,s); }
+/* Try to consume a token matching provided string */
 static int   eat(char *s) { return eatScanner(scan,s); }
 
+/* Parse word */
 static T_word p_word();
+/* Parse words */
 static T_words p_words();
+/* Parse redirection */
 static T_redir p_redir();
+/* Parse command */
 static T_command p_command();
+/* Parse pipeline */
 static T_pipeline p_pipeline();
+/* Parse sequence */
 static T_sequence p_sequence();
 
 static T_word p_word() {
@@ -106,11 +118,17 @@ extern Tree parseTree(char *s) {
   return tree;
 }
 
+/* Free word AST. */
 static void f_word(T_word t);
+/* Free words AST. */
 static void f_words(T_words t);
+/* Free redir AST. */
 static void f_redir(T_redir t);
+/* Free command AST */
 static void f_command(T_command t);
+/* Free pipeline AST. */
 static void f_pipeline(T_pipeline t);
+/* Free sequence AST. */
 static void f_sequence(T_sequence t);
 
 static void f_word(T_word t) {

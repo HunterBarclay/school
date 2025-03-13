@@ -16,11 +16,14 @@
  * [x] - Foreground Commands
  * [x] - Sequence of Commands
  * [x] - I/O Redirection
- * [?] - Background Commands
+ * [x] - Background Commands
  * [x] - Pipelines
  * [x] - Remaining Builtin Commands
  */
 
+/**
+ * Main shell execution loop
+ */
 int main() {
   int eof=0;
   Jobs jobs=newJobs();

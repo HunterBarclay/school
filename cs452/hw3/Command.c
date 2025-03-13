@@ -13,6 +13,7 @@
 #include "error.h"
 #include "Utils.h"
 
+/* Command internal representation. */
 typedef struct {
   char *file;
   char **argv;
@@ -22,15 +23,21 @@ typedef struct {
   int pid;
 } * CommandRep;
 
+/* Provided definitions for creating built in functions */
+
 #define BIARGS CommandRep r, int *eof, Jobs jobs
 #define BINAME(name) bi_##name
 #define BIDEFN(name) static void BINAME(name)(BIARGS)
 #define BIENTRY(name)     \
   { #name, BINAME(name) }
 
+/* State variables for builtin commands */
 static char *owd = 0;
 static char *cwd = 0;
 
+/**
+ * Determine if command has the correct number of arguments.
+ */
 static void builtin_args(CommandRep r, int n) {
   char **argv = r->argv;
   for (n++; *argv++; n--)
@@ -39,11 +46,17 @@ static void builtin_args(CommandRep r, int n) {
     ERROR("wrong number of arguments to builtin command"); // warn
 }
 
+/**
+ * Exit command. Will signal the shell to wait for commands and close.
+ */
 BIDEFN(exit) {
   builtin_args(r, 0);
   *eof = 1;
 }
 
+/**
+ * Present working directory command. Get current working directory.
+ */
 BIDEFN(pwd) {
   builtin_args(r, 0);
   if (!cwd)
@@ -51,6 +64,9 @@ BIDEFN(pwd) {
   printf("%s\n", cwd);
 }
 
+/**
+ * Change directory command. Changes the current working directory.
+ */
 BIDEFN(cd) {
   builtin_args(r, 1);
   if (!cwd)
@@ -74,6 +90,9 @@ BIDEFN(cd) {
     ERROR("Failed to get current working directory.");
 }
 
+/**
+ * History command. Get list of commands used.
+ */
 BIDEFN(history) {
   builtin_args(r, 0);
   HIST_ENTRY **hist = history_list();
@@ -88,6 +107,9 @@ BIDEFN(history) {
   }
 }
 
+/**
+ * Try to execute builtin command.
+ */
 static int builtin(BIARGS) {
   typedef struct {
     char *s;
@@ -104,6 +126,9 @@ static int builtin(BIARGS) {
   return 0;
 }
 
+/**
+ * Build argument list from interpreted words.
+ */
 static char **getargs(T_words words) {
   int n = 0;
   T_words p = words;
@@ -148,6 +173,9 @@ extern Command newCommand(T_command command) {
   return r;
 }
 
+/**
+ * Run command. Will spawn child process for non builtin or background commands.
+ */
 static void child(CommandRep r, int fg) {
   int eof = 0;
   Jobs jobs = newJobs();
