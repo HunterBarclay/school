@@ -1,1 +1,11 @@
+cd /tmp/shell-test-dir
+pwd
+pwd
+cd dir-a
+pwd
+cd -
+pwd
+pwd
+cd -
+pwd
 pwd

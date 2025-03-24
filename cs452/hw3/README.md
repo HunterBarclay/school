@@ -5,6 +5,7 @@
 
 ## Deliverables
 - `deq/` -> Copy of my deq from homework 1, with slight modifications for compilation purposes.
+- `tests/` -> Directory of all the tests.
 - `Command.[c|h]` -> Command module. Create an execute commands interpreted by the shell.
 - `error.h` -> Error header file. Copied from Deq.
 - `GNUMakefile` -> Compilation file. See below for details on how to compile and run.
@@ -41,3 +42,10 @@ make test
 # Just run tests
 ./run-tests
 ```
+
+## Implementation Details
+
+### Background Jobs
+When a background job is created (specifically an entire pipeline running in a children process), the process ID is printed along with a plus character
+to indicate a background job. Likewise, when the background task is waited on and reaped by the parent process, the process ID is printed out with
+a dash character. These print outs are done to STDERR to avoid issues with testing.

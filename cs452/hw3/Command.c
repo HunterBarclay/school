@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <errno.h>
+#include <math.h>
 #include <readline/history.h>
 
 #include "Command.h"
@@ -98,10 +99,15 @@ BIDEFN(history) {
   HIST_ENTRY **hist = history_list();
   if (!hist)
     return;
+  HISTORY_STATE *state = history_get_history_state();
+  if (!state || state->length == 0)
+    return;
   int i = 0;
   HIST_ENTRY *entry = hist[0];
+  char *printFormat = NULL;
+  asprintf(&printFormat, "[%%%dd] %%s\n", (int)floor(log10((double)state->length)) + 1);
   while (entry) {
-    printf("[%4d] %s\n", i + 1, entry->line);
+    printf(printFormat, i + 1, entry->line);
     ++i;
     entry = hist[i];
   }

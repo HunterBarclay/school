@@ -3,7 +3,8 @@ objs+=$(addsuffix .o,$(basename $(wildcard *.c *.cc)))
 
 defines+=-D_GNU_SOURCE
 ccflags+=-g -Wall -MMD $(defines) -fPIC
-ldflags:=-lreadline -lncurses -L. -ldeq
+# I actually have to link math??????
+ldflags:=-lreadline -lncurses -L. -ldeq -lm
 ld?=gcc
 
 .PHONY: clean valgrind deq all

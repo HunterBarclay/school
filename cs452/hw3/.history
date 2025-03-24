@@ -15,3 +15,7 @@ echo Hi & sleep 1 ; echo Hello
 exit
 echo Hi & sleep 1 ; echo Hello
 exit
+cat hello & cat hi
+exit
+history
+exit

@@ -1,2 +1,2 @@
 cd /tmp/shell-test-dir
-ls | wc -l > /tmp/count ; cat /tmp/count
+ls | wc -l > count ; cat count

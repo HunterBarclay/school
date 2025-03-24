@@ -6,9 +6,6 @@
 let passed=0
 let failed=0
 
-# Gen some expected test results
-pwd > tests/test-pwd/exp1
-
 # Make tmp directory for easy cd tests
 ResetTmpDir() {
     [ -d /tmp/shell-test-dir ] && rm -rf /tmp/shell-test-dir
