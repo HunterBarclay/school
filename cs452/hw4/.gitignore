@@ -1,0 +1,8 @@
+shell
+libdeq.so
+try
+trytest
+test
+*.o
+*.d
+*.i

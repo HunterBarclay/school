@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -x
+
+#gen=--gen-suppressions=all
+
+valgrind $gen \
+    --leak-check=full \
+    --show-leak-kinds=all \
+    --suppressions=rl.supp \
+    ./wam
+
+# valgrind --trace-children=yes --log-file=vp.%p ./wam 

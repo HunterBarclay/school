@@ -1,0 +1,5 @@
+libdeq.so
+libdeq.a
+*.o
+*.d
+*.i

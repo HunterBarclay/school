@@ -1,0 +1,44 @@
+prog=wam
+objs+=$(addsuffix .o,$(basename $(wildcard *.c *.cc)))
+
+defines+=-D_GNU_SOURCE
+ccflags+=-pthread -g -Wall -MMD $(defines) -fPIC
+ldflags:=-pthread -lX11 -lfltk -L. -ldeq
+ld=g++
+
+.PHONY: clean valgrind deq all
+
+# Requires deq be addressed first, before evaluating the rest of the dependencies
+all: $(prog) ;
+
+# Runs the deq makefile
+deq:
+	@printf "\033[2;3mBuilding deq...\033[0m\n"
+	$(MAKE) -C deq
+	@printf "\033[92;1mdeq Built\033[0m\n"
+
+.SUFFIXES:
+
+%.o: %.c  ; gcc -o $@ -c $< $(ccflags)
+%.i: %.c  ; gcc -o $@ -E $< $(defines)
+%.s: %.c  ; gcc -o $@ -S $< $(defines)
+%.o: %.cc ; g++ -o $@ -c $< $(ccflags)
+%.i: %.cc ; g++ -o $@ -E $< $(defines)
+%.s: %.cc ; g++ -o $@ -S $< $(defines)
+
+$(prog): deq $(objs) libdeq.so
+	@printf "\033[2;3mBuilding %s...\033[0m\n" $@
+	$(ld) -o $@ $(objs) $(ldflags) -Wl,-rpath=.
+	@printf "\033[92;1m%s Built\033[0m\n" $@
+
+libdeq.so: deq/libdeq.so
+	cp $^ ./
+
+test: $(prog)
+	run-tests
+
+clean:
+	rm -f $(prog) libdeq.so test *.o *.d *.i
+	$(MAKE) -C deq clean
+
+valgrind: $(prog) ; vg
