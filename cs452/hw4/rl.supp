@@ -1,24 +1,12 @@
 {
-   Readline1
+   FLTK
    Memcheck:Leak
-   fun:*alloc
    ...
-   fun:readline
-   fun:main
+   obj:*/libfltk.so.*
 }
 {
-   Readline2
-   Memcheck:Leak
-   fun:*alloc
-   ...
-   fun:read_history_range
-   fun:main
-}
-{
-   Readline3
-   Memcheck:Leak
-   fun:*alloc
-   ...
-   fun:add_history
-   fun:main
+	X11
+	Memcheck:Leak
+	...
+	obj:*/libX11.so.*
 }

@@ -6,11 +6,12 @@
 
 #include "error.h"
 
+/* Internal Mtq representation */
 typedef struct mtq_rep_t {
   Deq q;
   unsigned int max_capacity;
   pthread_mutex_t mutex;
-  pthread_mutex_t get_cond;
+  pthread_cond_t get_cond;
 } * MtqRep;
 
 extern Mtq mtq_new(unsigned int max_capacity) {
@@ -44,7 +45,6 @@ extern void mtq_put(Mtq q, Data d) {
       pthread_cond_wait(&r->get_cond, &r->mutex);
   }
   deq_tail_put(r->q, d);
-  printf("put\n");
   pthread_mutex_unlock(&r->mutex);
 }
 
@@ -54,13 +54,12 @@ extern Data mtq_get(Mtq q) {
   MtqRep r = (MtqRep)q;
   Data res = NULL;
   pthread_mutex_lock(&r->mutex);
-  if (deq_len(r->q) > 0) {
+  if (deq_len(r->q) > 0)
     res = deq_head_get(r->q);
-    printf("get\n");
-  }
   pthread_mutex_unlock(&r->mutex);
   if (res) {
     pthread_cond_signal(&r->get_cond);
   }
   return res;
 }
+
