@@ -12,6 +12,7 @@ typedef struct mtq_rep_t {
   unsigned int max_capacity;
   pthread_mutex_t mutex;
   pthread_cond_t get_cond;
+  pthread_cond_t put_cond;
 } * MtqRep;
 
 extern Mtq mtq_new(unsigned int max_capacity) {
@@ -20,6 +21,7 @@ extern Mtq mtq_new(unsigned int max_capacity) {
   r->max_capacity = max_capacity;
   pthread_mutex_init(&r->mutex, NULL);
   pthread_cond_init(&r->get_cond, NULL);
+  pthread_cond_init(&r->put_cond, NULL);
   return r;
 }
 
@@ -28,6 +30,7 @@ extern void mtq_del(Mtq q, DeqMapF map) {
     return;
   MtqRep r = (MtqRep)q;
   pthread_cond_destroy(&r->get_cond);
+  pthread_cond_destroy(&r->put_cond);
   pthread_mutex_destroy(&r->mutex);
   deq_del(r->q, map);
   free(r);
@@ -46,6 +49,7 @@ extern void mtq_put(Mtq q, Data d) {
   }
   deq_tail_put(r->q, d);
   pthread_mutex_unlock(&r->mutex);
+  pthread_cond_signal(&r->put_cond);
 }
 
 extern Data mtq_get(Mtq q) {
@@ -54,12 +58,11 @@ extern Data mtq_get(Mtq q) {
   MtqRep r = (MtqRep)q;
   Data res = NULL;
   pthread_mutex_lock(&r->mutex);
-  if (deq_len(r->q) > 0)
-    res = deq_head_get(r->q);
+  while (deq_len(r->q) == 0)
+    pthread_cond_wait(&r->put_cond, &r->mutex);
+  res = deq_head_get(r->q);
   pthread_mutex_unlock(&r->mutex);
-  if (res) {
-    pthread_cond_signal(&r->get_cond);
-  }
+  pthread_cond_signal(&r->get_cond);
   return res;
 }
 

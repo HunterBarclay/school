@@ -31,9 +31,7 @@ static void *produce(void *args) {
 static void *consume(void *args) {
   void **t_args = (void **)args;
   Mtq q = (Mtq)t_args[0];
-  Mole m = NULL;
-  while (!m)
-    m = mtq_get(q);
+  Mole m = mtq_get(q);
   mole_whack(m);
   return NULL;
 }

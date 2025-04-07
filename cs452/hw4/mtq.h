@@ -27,7 +27,7 @@ extern void mtq_put(Mtq q, Data d);
 
 /**
  * Get the next piece of data in the queue. Will
- * return NULL in queue is empty.
+ * hold for element to be added.
  */
 extern Data mtq_get(Mtq q);
 
