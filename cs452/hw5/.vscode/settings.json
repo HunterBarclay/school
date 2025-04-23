@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "kernel.h": "c",
+        "fs.h": "c",
+        "init.h": "c",
+        "module_testmod.h": "c",
+        "hello_testmod.h": "c",
+        "hello_scanner.h": "c"
+    }
+}
