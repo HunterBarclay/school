@@ -90,18 +90,15 @@ static ssize_t read(struct file *filp, char *buf, size_t count, loff_t *f_pos) {
 
   // Check for end of token
   n = file->head - base;
-  if (!n) { // If token is length zero, report and skip separator tokens.
-    while (file->head < file->source_len && is_one_of(file->source[file->head], file->sep, file->sep_len))
-      ++file->head;
-    if (file->head == file->source_len)
-      ++file->head; // Needed to delay sending end of data until after sending end of token once.
+  if (!n) { // If token is length zero, report end of token.
+    ++file->head;
     return 0;
   }
 
   // Copy token to buffer and return read characters
   if (copy_to_user(buf, file->source + base, n)) {
     printk(KERN_ERR "%s: copy_to_user() failed\n", DEVNAME);
-    return -1;
+    return -2;
   }
   return n;
 }

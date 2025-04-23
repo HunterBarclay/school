@@ -66,6 +66,3 @@ You can also compile the `TestScanner` program yourself and run the previous opt
 # Test Scanner
 ./TestScanner test
 ```
-
-## Specific Implementation Notes
-If multiple separators are found in a row, the scanner will skip all of them, not just one. While in instances of CSV files, this wouldn't be very useful, in all the uses of Scanners we've had in this class, they have done the same as I have.

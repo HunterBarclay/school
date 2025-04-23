@@ -63,32 +63,36 @@ static void test_double_sep() {
   fprintf(stderr, "Start Test B: Double Separator...\n");
 
   int scanner = init_scanner(":,", 2);
-  ASSERT(write(scanner, "Test:a,b:c,data,", 16) == 16, "[B] Failed to write data");
+  ASSERT(write(scanner, ",Test:a,b:c,data,", 17) == 17, "[B] Failed to write data");
 
-  ASSERT((len=read(scanner, buf, max)) == 4, "[B] Failed to read token 1");
-  buf[len] = 0;
-  ASSERT(strcmp(buf, "Test") == 0, "[B] Bad token 1");
-  ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to end token 1");
+  ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to read token 1");
 
-  ASSERT((len=read(scanner, buf, max)) == 1, "[B] Failed to read token 2");
+  ASSERT((len=read(scanner, buf, max)) == 4, "[B] Failed to read token 2");
   buf[len] = 0;
-  ASSERT(strcmp(buf, "a") == 0, "[B] Bad token 2");
+  ASSERT(strcmp(buf, "Test") == 0, "[B] Bad token 2");
   ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to end token 2");
 
   ASSERT((len=read(scanner, buf, max)) == 1, "[B] Failed to read token 3");
   buf[len] = 0;
-  ASSERT(strcmp(buf, "b") == 0, "[B] Bad token 3");
+  ASSERT(strcmp(buf, "a") == 0, "[B] Bad token 3");
   ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to end token 3");
 
   ASSERT((len=read(scanner, buf, max)) == 1, "[B] Failed to read token 4");
   buf[len] = 0;
-  ASSERT(strcmp(buf, "c") == 0, "[B] Bad token 4");
+  ASSERT(strcmp(buf, "b") == 0, "[B] Bad token 4");
   ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to end token 4");
 
-  ASSERT((len=read(scanner, buf, max)) == 4, "[B] Failed to read token 5");
+  ASSERT((len=read(scanner, buf, max)) == 1, "[B] Failed to read token 5");
   buf[len] = 0;
-  ASSERT(strcmp(buf, "data") == 0, "[B] Bad token 5");
+  ASSERT(strcmp(buf, "c") == 0, "[B] Bad token 5");
   ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to end token 5");
+
+  ASSERT((len=read(scanner, buf, max)) == 4, "[B] Failed to read token 6");
+  buf[len] = 0;
+  ASSERT(strcmp(buf, "data") == 0, "[B] Bad token 6");
+  ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to end token 6");
+
+  ASSERT((len=read(scanner, buf, max)) == 0, "[B] Failed to read token 7");
 
   ASSERT((len=read(scanner, buf, max)) == -1, "[B] Failed to end data");
   ASSERT((len=read(scanner, buf, max)) == -1, "[B] Failed to end data");
@@ -156,15 +160,21 @@ static void test_null_sep() {
   ASSERT(strcmp(buf, "ish-buffer") == 0, "[D] Bad token 4");
   ASSERT((len=read(scanner, buf, max)) == 0, "[D] Failed to end token 4");
 
-  ASSERT((len=read(scanner, buf, max)) == 2, "[D] Failed to read token 5");
-  buf[len] = 0;
-  ASSERT(strcmp(buf, "hi") == 0, "[D] Bad token 5");
   ASSERT((len=read(scanner, buf, max)) == 0, "[D] Failed to end token 5");
 
-  ASSERT((len=read(scanner, buf, max)) == 5, "[D] Failed to read token 6");
-  buf[len] = 0;
-  ASSERT(strcmp(buf, "there") == 0, "[D] Bad token 6");
   ASSERT((len=read(scanner, buf, max)) == 0, "[D] Failed to end token 6");
+
+  ASSERT((len=read(scanner, buf, max)) == 2, "[D] Failed to read token 7");
+  buf[len] = 0;
+  ASSERT(strcmp(buf, "hi") == 0, "[D] Bad token 7");
+  ASSERT((len=read(scanner, buf, max)) == 0, "[D] Failed to end token 7");
+
+  ASSERT((len=read(scanner, buf, max)) == 0, "[D] Failed to end token 8");
+
+  ASSERT((len=read(scanner, buf, max)) == 5, "[D] Failed to read token 9");
+  buf[len] = 0;
+  ASSERT(strcmp(buf, "there") == 0, "[D] Bad token 9");
+  ASSERT((len=read(scanner, buf, max)) == 0, "[D] Failed to end token 9");
 
   ASSERT((len=read(scanner, buf, max)) == -1, "[D] Failed to end data");
 
